@@ -33,7 +33,7 @@ export default function Header() {
       <div className="w-full max-w-[1200px] mx-auto flex justify-between items-center">
         <Link
           href="/"
-          className="text-2xl font-bold flex items-center"
+          className="text-2xl font-bold flex items-center text-[#36621f] dark:text-white"
         >
             <Image src={Logo} alt="brand-logo" className="w-6 h-6 mr-2" />
             <h1>Taskify</h1>
@@ -46,10 +46,10 @@ export default function Header() {
             Features
           </Link>
           <Link
-            href="#pricing"
+            href="#signin"
             className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
           >
-            Pricing
+            Sign In
           </Link>
           <button
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
