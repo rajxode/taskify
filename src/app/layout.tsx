@@ -31,11 +31,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <Header />
           <main className="flex-grow">
             {children}
           </main>
-          <Footer />
         </ThemeProvider>
       </body>
     </html>
