@@ -27,7 +27,7 @@ export const timeEntries = pgTable("time_entries",{
         .$default(() => crypto.randomUUID()),
     taskId: varchar("task_id").notNull().references(() => taskTable.id),
     userId: varchar("user_id").notNull().references(() => userTable.id),
-    startTime: timestamp("start_time").notNull(),
+    startTime: timestamp("start_time").notNull().defaultNow(),
     endTime: timestamp("end_time"),
     durationSeconds: bigint("duration_seconds",{mode:"number"}),
 });

@@ -10,7 +10,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"  ;
 import { Avatar, AvatarFallback } from "../ui/avatar";
-import { UserInterface } from "@/types/userType";
+import { UserInterface } from "@/types/commonType";
 import { useTheme } from "next-themes";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { useToast } from "@/hooks/use-toast";

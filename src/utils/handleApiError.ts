@@ -27,3 +27,23 @@ export function handleApiError(error: unknown) {
     }
   );
 }
+
+export function unAuthorizedError(){
+  return NextResponse.json({
+      success:false,
+      message:"Unauthorized"
+    },{
+      status:401
+    }
+  )
+}
+
+export function validationError(message:string) {
+  return NextResponse.json({
+      success:false,
+      message
+    },{
+      status:400
+    }
+  )
+}
