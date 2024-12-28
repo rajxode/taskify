@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import Header from "@/components/header";
-import Footer from "@/components/footer";
+import { Toaster } from "@/components/ui/toaster";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,8 +30,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <main className="flex-grow">
+          <main className="flex-grow bg-gradient-to-br from-white to-gray-100
+            dark:to-[#121212]/80 dark:from-gray-900/80 ">
             {children}
+            <Toaster />
           </main>
         </ThemeProvider>
       </body>

@@ -1,29 +1,26 @@
-"use client";
-import { useState, useEffect } from "react";
-import { useTheme } from "next-themes";
+
 import Link from "next/link";
-import { Moon, Sun } from "lucide-react";
 import Image from "next/image";
 import Logo from "../../public/assets/logo.png";
+import ThemeChange from "./header/ThemeChange";
+import { axiosInstance } from "@/utils/axiosInstance";
+import { cookies } from "next/headers";
+import { Avatar, AvatarFallback } from "./ui/avatar";
 
-export default function Header({parent}:{parent:string}) {
-  const [mounted, setMounted] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const { theme, setTheme } = useTheme();
-
-  useEffect(() => {
-    if (window !== undefined) {
-      setMounted(true);
-      const handleScroll = () => {
-        setScrolled(window.scrollY > 0);
-      };
-      window.addEventListener("scroll", handleScroll);
-      return () => window.removeEventListener("scroll", handleScroll);
+export default async function Header({parent}:{parent:string}) {
+  const cookieStore = cookies();
+  let user = null;
+  const token = (await cookieStore).get("token")?.value;
+  if(token) {
+    const {data} = await axiosInstance.get("/users/my-data",{
+      headers:{
+        Cookie: `token=${token}`
+      }
+    });
+    if(data.success) {
+      user = data.user;
     }
-  }, []);
-
-  if (!mounted) return null;
-
+  }
   return (
     <header
       className="py-4 px-4 sm:px-6 lg:px-8 sticky top-0 z-10 bg-gradient-to-r 
@@ -61,12 +58,17 @@ export default function Header({parent}:{parent:string}) {
               :
               null
           }
-          <button
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
-          >
-            {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
-          </button>
+          {
+            user
+            ?
+            <>
+              <Avatar>
+                <AvatarFallback>{user?.name[0].toUpperCase()}</AvatarFallback>
+              </Avatar>
+            </>
+            :
+            <ThemeChange />
+          }
         </nav>
       </div>
     </header>

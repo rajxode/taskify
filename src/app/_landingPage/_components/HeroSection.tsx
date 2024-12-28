@@ -1,6 +1,5 @@
 
 import Image from "next/image";
-import Link from "next/link";
 import React from "react";
 import BannerImage from "../../../../public/assets/save-time.png";
 import LinkButton from "@/components/basic-reusable/link-button";

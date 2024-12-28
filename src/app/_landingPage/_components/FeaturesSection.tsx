@@ -1,7 +1,7 @@
 
 import React from "react";
 import FeatureCard from "@/app/_landingPage/_components/FeatureCard";
-import { Clock, BarChart2, Calendar, Brain } from "lucide-react";
+import { Clock, BarChart2, Brain } from "lucide-react";
 import { H2Heading } from "@/components/basic-reusable/headings";
 
 const FeatureSection:React.FC = () => {
