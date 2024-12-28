@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import CustomFormFooter from "@/components/auth-components/CustomFormFooter";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { useRouter } from "next/navigation";
+import { handleAxiosError } from "@/utils/handleAxiosError";
 
 const formSchema = z.object({
   name: z.string(),
@@ -53,19 +54,8 @@ const SignupForm = () => {
           title: message,
         });
       }
-    } catch (error: any) {
-      const { message } = error.response.data;
-      if (message) {
-        toast({
-          variant: "destructive",
-          title: message,
-        });
-      } else {
-        toast({
-          variant: "destructive",
-          title: "Something went wrong !!",
-        });
-      }
+    } catch (error: unknown) {
+      handleAxiosError(error,toast);
     }
   }
   return (

@@ -5,6 +5,7 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import { userTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { UserInterface } from "@/types/userType";
+import { handleApiError } from "@/utils/handleApiError";
 
 export async function GET(req:NextRequest) {
     try {
@@ -40,9 +41,7 @@ export async function GET(req:NextRequest) {
                 status:200
             }
         )
-    } catch (error:any) {
-        return NextResponse.json({
-            success:false,
-        })
+    } catch (error:unknown) {
+        return handleApiError(error);
     }
 }

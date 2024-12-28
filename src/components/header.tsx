@@ -5,7 +5,7 @@ import Logo from "../../public/assets/logo.png";
 import ThemeChange from "./header/ThemeChange";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { cookies } from "next/headers";
-import { Avatar, AvatarFallback } from "./ui/avatar";
+import AvatarAndMenu from "./header/AvatarAndMenu";
 
 export default async function Header({parent}:{parent:string}) {
   const cookieStore = cookies();
@@ -62,9 +62,7 @@ export default async function Header({parent}:{parent:string}) {
             user
             ?
             <>
-              <Avatar>
-                <AvatarFallback>{user?.name[0].toUpperCase()}</AvatarFallback>
-              </Avatar>
+              <AvatarAndMenu user={user} />
             </>
             :
             <ThemeChange />

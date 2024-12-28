@@ -6,6 +6,7 @@ import { eq } from "drizzle-orm";
 import bcryptjs from "bcryptjs";
 import { UserInterface } from "@/types/userType";
 import { SignJWT } from "jose";
+import { handleApiError } from "@/utils/handleApiError";
 
 interface BodyType{
     email:string;
@@ -19,6 +20,16 @@ export async function POST(req:NextRequest) {
         const db = await drizzle(process.env.DATABASE_URL!);
         const body:BodyType = await req.json();
         const {email, password} = body;
+
+        if(!email || !password) {
+            return NextResponse.json({
+                success:false,
+                message:"All fields required"
+            },{
+                status:400
+            }
+        )
+        }
 
         const userExist = await db.select().from(userTable).where(eq(userTable.email, email.toLowerCase()));
         const user:UserInterface = userExist[0];
@@ -69,13 +80,6 @@ export async function POST(req:NextRequest) {
         return response
 
     } catch (error:any) {
-        console.log("error in signin", error.message);
-        return NextResponse.json({
-                success:false,
-                message:"Internal server error"
-            },{
-                status:500
-            }
-        )
+        return handleApiError(error);
     }
 }

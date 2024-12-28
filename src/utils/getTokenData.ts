@@ -15,7 +15,7 @@ export async function getTokenData(req:NextRequest) {
             return false
         }
         return isVerified.payload;
-    } catch (error:any) {
+    } catch (error:unknown) {
         return false;
     }
 }
