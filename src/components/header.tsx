@@ -6,20 +6,27 @@ import ThemeChange from "./header/ThemeChange";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { cookies } from "next/headers";
 import AvatarAndMenu from "./header/AvatarAndMenu";
+import { notFound } from "next/navigation";
 
 export default async function Header({parent}:{parent:string}) {
-  const cookieStore = cookies();
   let user = null;
-  const token = (await cookieStore).get("token")?.value;
-  if(token) {
-    const {data} = await axiosInstance.get("/users/my-data",{
-      headers:{
-        Cookie: `token=${token}`
+  try {
+    const cookieStore = cookies();
+    const token = (await cookieStore).get("token")?.value;
+    if(token) {
+      const {data} = await axiosInstance.get("/users/my-data",{
+        headers:{
+          Cookie: `token=${token}`
+        }
+      });
+      if(data.success) {
+        user = data.user;
       }
-    });
-    if(data.success) {
-      user = data.user;
     }
+  } catch (error:any) {
+    console.log('axios error', error.response.data);
+    // console.log('error', error.message);
+    notFound();
   }
   return (
     <header

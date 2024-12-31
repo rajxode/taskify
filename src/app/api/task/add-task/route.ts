@@ -5,7 +5,7 @@ import {
   unAuthorizedError,
   validationError,
 } from "@/utils/handleApiError";
-import { drizzle } from "drizzle-orm/postgres-js";
+import { db } from "@/db";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -15,7 +15,6 @@ export async function POST(req: NextRequest) {
       return unAuthorizedError();
     }
     const userId = token.id as string;
-    const db = await drizzle(process.env.DATABASE_URL!);
     const body = await req.json();
     const { name, description } = body;
 

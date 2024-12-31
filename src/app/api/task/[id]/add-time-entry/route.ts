@@ -2,7 +2,7 @@ import { timeEntries } from "@/db/schema";
 import { TaskInterface, TimeEntryInterface } from "@/types/commonType";
 import { handleApiError } from "@/utils/handleApiError";
 import { InferSelectModel } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/postgres-js";
+import { db } from "@/db";
 import { NextRequest, NextResponse } from "next/server";
 
 type Entry = InferSelectModel<typeof timeEntries>;
@@ -40,7 +40,6 @@ export async function POST(
         }
       );
     }
-    const db = await drizzle(process.env.DATABASE_URL!);
     const entries: Entry[] = await db
       .insert(timeEntries)
       .values({ userId: task.userId, taskId: task.id })

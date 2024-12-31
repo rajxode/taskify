@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { drizzle } from "drizzle-orm/postgres-js";
+import { db } from "@/db";
 import { userTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import bcryptjs from "bcryptjs";
@@ -16,7 +16,6 @@ const secret = new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_SECRET);
 
 export async function POST(req: NextRequest) {
   try {
-    const db = await drizzle(process.env.DATABASE_URL!);
     const body: BodyType = await req.json();
     const { email, password } = body;
 

@@ -1,6 +1,6 @@
 import { getTokenData } from "@/utils/getTokenData";
 import { NextRequest, NextResponse } from "next/server";
-import { drizzle } from "drizzle-orm/postgres-js";
+import { db } from "@/db";
 import { userTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { UserInterface } from "@/types/commonType";
@@ -8,7 +8,6 @@ import { handleApiError } from "@/utils/handleApiError";
 
 export async function GET(req: NextRequest) {
   try {
-    const db = await drizzle(process.env.DATABASE_URL!);
     const token = await getTokenData(req);
 
     if (!token) {

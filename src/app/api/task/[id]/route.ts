@@ -6,7 +6,7 @@ import {
   validationError,
 } from "@/utils/handleApiError";
 import { and, eq, InferSelectModel } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/postgres-js";
+import { db } from "@/db";
 import { NextRequest, NextResponse } from "next/server";
 import { TaskInterface } from "@/types/commonType";
 
@@ -26,7 +26,6 @@ export async function GET(
       return unAuthorizedError();
     }
     const userId = token?.id as string;
-    const db = await drizzle(process.env.DATABASE_URL!);
     const foundTask: Task[] = await db
       .select()
       .from(taskTable)
@@ -82,7 +81,6 @@ export async function PUT(
         }
       );
     }
-    const db = await drizzle(process.env.DATABASE_URL!);
     const body = await req.json();
     const { name, description } = body;
     if (!name) {
@@ -135,7 +133,6 @@ export async function DELETE(
         }
       );
     }
-    const db = await drizzle(process.env.DATABASE_URL!);
     await db
       .delete(taskTable)
       .where(and(eq(taskTable.id, id), eq(taskTable.userId, task.userId)));

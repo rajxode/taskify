@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { userTable } from "@/db/schema";
-import { drizzle } from "drizzle-orm/postgres-js";
+import { db } from "@/db";
 import { eq } from "drizzle-orm";
 import bcryptjs from "bcryptjs";
 import { UserInterface } from "@/types/commonType";
@@ -8,7 +8,6 @@ import { handleApiError } from "@/utils/handleApiError";
 
 export async function POST(req: NextRequest) {
   try {
-    const db = drizzle(process.env.DATABASE_URL!);
     const body = await req.json();
     const { name, email, password } = body;
 

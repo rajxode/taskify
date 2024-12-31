@@ -12,6 +12,8 @@ export interface TaskInterface {
     name:string;
     description:string | null;
     userId:string;
+    lastTimerDuration:number;
+    lastPerformAt?:Date | null;
     createdAt:Date;
 }
 
@@ -21,5 +23,5 @@ export interface TimeEntryInterface {
     userId:string;
     startTime:Date;
     endTime:Date|null;
-    durationSeconds:number|null;
+    durationSeconds:number;
 }
