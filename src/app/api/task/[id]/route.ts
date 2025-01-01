@@ -1,4 +1,4 @@
-import { taskTable } from "@/db/schema";
+import { taskTable, timeEntries } from "@/db/schema";
 import { getTokenData } from "@/utils/getTokenData";
 import {
   handleApiError,
@@ -133,6 +133,9 @@ export async function DELETE(
         }
       );
     }
+    await db
+      .delete(timeEntries)
+      .where(eq(timeEntries.taskId, id));
     await db
       .delete(taskTable)
       .where(and(eq(taskTable.id, id), eq(taskTable.userId, task.userId)));

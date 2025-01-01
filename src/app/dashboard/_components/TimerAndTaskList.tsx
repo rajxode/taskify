@@ -74,13 +74,18 @@ const TimerAndTaskList:React.FC<{tasks: TaskInterface[]}> = ({tasks}) => {
         formatTime={formatTime} 
       />
       <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6 overflow-y-auto relative">
-        <div className="flex justify-between items-center mb-2">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-            Tasks
-          </h2>
-          <AddTask />
+        <div className="flex justify-between items-center mb-4">
+          <div>
+            <h2 className="text-xl font-semibold text-[#36621f] dark:text-white">
+              Tasks
+            </h2>
+          </div>
+          <AddTask 
+            setTaskList={setTaskList} 
+            taskList={taskList}
+          />
         </div>
-        <TaskList 
+        <TaskList
           tasks={taskList} 
           handleDeleteTask={handleDeleteTask} 
           isRunning={isRunning}
