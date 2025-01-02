@@ -41,7 +41,16 @@ const TimerAndTaskList:React.FC<{tasks: TaskInterface[]}> = ({tasks}) => {
     const minutes = Math.floor((seconds % 3600) / 60);
     const remainingSeconds = seconds % 60;
     return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
-};
+  };
+
+  const handlePauseResume = (taskId:string) => {
+    if (isRunning) {
+      setIsRunning(false);
+    } else {
+      setIsRunning(true);
+      // setTimer(tasks.find((task) => task.id === taskId)?.lastTimerDuration || 0);
+    }
+  }
 
   const handleStartStop = (taskId: string) => {
     if (isRunning && activeTaskId === taskId) {

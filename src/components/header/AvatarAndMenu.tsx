@@ -38,7 +38,7 @@ const AvatarAndMenu:React.FC<{user:UserInterface}> = ({user}) => {
     }
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger>
+            <DropdownMenuTrigger className="focus:outline-none border-none">
                 <Avatar>
                     <AvatarFallback>{user?.name[0].toUpperCase()}</AvatarFallback>
                 </Avatar>
