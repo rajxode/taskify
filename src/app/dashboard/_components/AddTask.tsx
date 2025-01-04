@@ -114,7 +114,7 @@ const AddTask:React.FC<PropType> = ({setTaskList, taskList}) => {
                                 Please wait <span><Loader /></span>
                             </>
                             :
-                            "Save changes"
+                            "Add Task"
                         }
                     </Button>
                     <DialogClose id="close-btn"></DialogClose>

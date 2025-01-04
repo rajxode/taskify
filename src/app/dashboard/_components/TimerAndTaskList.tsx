@@ -6,8 +6,11 @@ import AddTask from "./AddTask";
 import TaskList from "./TaskList";
 import { TaskInterface } from "@/types/commonType";
 import { axiosInstance } from "@/utils/axiosInstance";
+import { useToast } from "@/hooks/use-toast";
+import { handleAxiosError } from "@/utils/handleAxiosError";
 
 const TimerAndTaskList:React.FC<{tasks: TaskInterface[]}> = ({tasks}) => {
+  const {toast} = useToast();
   const [taskList, setTaskList] = useState<TaskInterface[]>(tasks);
   const [timer, setTimer] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
@@ -74,6 +77,18 @@ const TimerAndTaskList:React.FC<{tasks: TaskInterface[]}> = ({tasks}) => {
       }
     }
   };
+
+  const handleUpdateTask = async(id:string, task:{name:string; description?:string;}):Promise<boolean> => {
+    try {
+      const {data} = await axiosInstance.put(`/task/${id}`,{
+        name:task.name, description: task.description
+      });
+      return data.success;
+    } catch (error:unknown) {
+      handleAxiosError(error, toast);
+      return false;
+    }
+  }
   return (
     <>
       <TimerBlock
@@ -95,12 +110,14 @@ const TimerAndTaskList:React.FC<{tasks: TaskInterface[]}> = ({tasks}) => {
           />
         </div>
         <TaskList
-          tasks={taskList} 
+          taskList={taskList}
           handleDeleteTask={handleDeleteTask} 
           isRunning={isRunning}
           formatTime={formatTime}
           activeTaskId={activeTaskId}
           handleStartStop={handleStartStop}
+          setTaskList={setTaskList}
+          handleUpdateTask={handleUpdateTask}
         />
       </div>
     </>
