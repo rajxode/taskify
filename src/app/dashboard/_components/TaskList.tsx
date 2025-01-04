@@ -5,7 +5,7 @@ import TaskListCard from "./TaskListCard";
 
 interface PropType {
   taskList: TaskInterface[];
-  handleDeleteTask: (id: string) => Promise<void>;
+  handleDeleteTask: (id: string) => Promise<boolean>;
   formatTime: (seconds: number) => string;
   isRunning: boolean;
   activeTaskId: string | null;
@@ -25,15 +25,15 @@ const TaskList: React.FC<PropType> = ({
   return (
     <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       {taskList?.map((task) => <TaskListCard 
-                                key={task.id}
-                                task={task}
-                                activeTaskId={activeTaskId}
-                                formatTime={formatTime}
-                                handleDeleteTask={handleDeleteTask}
-                                handleStartStop={handleStartStop}
-                                isRunning={isRunning}
-                                handleUpdateTask={handleUpdateTask}
-                              />)}
+                                  key={task.id}
+                                  task={task}
+                                  activeTaskId={activeTaskId}
+                                  formatTime={formatTime}
+                                  handleDeleteTask={handleDeleteTask}
+                                  handleStartStop={handleStartStop}
+                                  isRunning={isRunning}
+                                  handleUpdateTask={handleUpdateTask}
+                                />)}
     </ul>
   );
 };

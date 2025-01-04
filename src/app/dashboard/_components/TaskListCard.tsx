@@ -9,7 +9,7 @@ import TaskMenu from "./TaskMenu";
 
 interface PropType {
   task: TaskInterface;
-  handleDeleteTask: (id: string) => Promise<void>;
+  handleDeleteTask: (id: string) => Promise<boolean>;
   formatTime: (seconds: number) => string;
   isRunning: boolean;
   activeTaskId: string | null;
@@ -28,8 +28,7 @@ const TaskListCard:React.FC<PropType> = ({
 }) => {
     return (
         <li
-          key={task.id}
-          className="flex flex-col items-center justify-between p-3 bg-gray-100 dark:bg-gray-700 rounded-md h-[200px]"
+          className="flex flex-col items-center justify-between p-3 bg-gray-100 dark:bg-gray-700 rounded-lg h-[200px]"
         >
           <div className="w-full flex justify-between items-start">
             <div>

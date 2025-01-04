@@ -7,7 +7,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
   DialogClose,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -32,26 +31,23 @@ const UpdateTask: React.FC<PropType> = ({ previousTask, handleUpdateTask }) => {
     description: previousTask?.description,
   });
   const [loading, setLoading] = useState(false);
-  const handleAddTask = async (e: React.FormEvent) => {
+  const handleClick = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
       if (task.name.trim()) {
-        const { data } = await axiosInstance.post("/task/add-task", {
-          name: task.name.trim(),
-          description: task.description,
-        });
-        if (data.success) {
+        const result = await handleUpdateTask(previousTask.id, {name:task.name, description:task?.description || ""});
+        if (result) {
           toast({
             variant: "success",
             title: "Task updated successfully",
           });
-          const task = data?.task;
-          // setTaskList([...taskList, task]);
           if (window != undefined) {
             const closeBtn = document.getElementById("close-btn");
             closeBtn?.click();
           }
+        } else {
+            throw new Error;
         }
       } else {
         toast({
@@ -60,14 +56,16 @@ const UpdateTask: React.FC<PropType> = ({ previousTask, handleUpdateTask }) => {
         });
       }
     } catch (error: unknown) {
-      handleAxiosError(error, toast);
+        toast({
+            variant: "destructive",
+            title: "Something went wrong",
+        });
     } finally {
       setLoading(false);
     }
   };
   return (
     <>
-      <DialogTrigger asChild>Update</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Update Task</DialogTitle>
@@ -99,7 +97,7 @@ const UpdateTask: React.FC<PropType> = ({ previousTask, handleUpdateTask }) => {
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit" onClick={handleAddTask} disabled={loading}>
+          <Button type="submit" onClick={handleClick} disabled={loading}>
             {loading ? (
               <>
                 Please wait{" "}

@@ -8,6 +8,7 @@ import { TaskInterface } from "@/types/commonType";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { useToast } from "@/hooks/use-toast";
 import { handleAxiosError } from "@/utils/handleAxiosError";
+import { boolean } from "drizzle-orm/mysql-core";
 
 const TimerAndTaskList:React.FC<{tasks: TaskInterface[]}> = ({tasks}) => {
   const {toast} = useToast();
@@ -66,15 +67,21 @@ const TimerAndTaskList:React.FC<{tasks: TaskInterface[]}> = ({tasks}) => {
     }
   };
 
-  const handleDeleteTask = async(id: string) => {
-    const {data} = await axiosInstance.delete(`/task/${id}`);
-    if(data.success) {
-      setTaskList(tasks.filter((task) => task.id !== id));
-      if (activeTaskId === id) {
-        setIsRunning(false);
-        setActiveTaskId(null);
-        setTimer(0);
+  const handleDeleteTask = async(id: string):Promise<boolean> =>  {
+    try {
+      const {data} = await axiosInstance.delete(`/task/${id}`);
+      if(data.success) {
+        setTaskList(tasks.filter((task) => task.id !== id));
+        if (activeTaskId === id) {
+          setIsRunning(false);
+          setActiveTaskId(null);
+          setTimer(0);
+        }
       }
+      return data.success;
+    } catch (error:unknown) {
+      handleAxiosError(error, toast);
+      return false;
     }
   };
 
@@ -83,6 +90,13 @@ const TimerAndTaskList:React.FC<{tasks: TaskInterface[]}> = ({tasks}) => {
       const {data} = await axiosInstance.put(`/task/${id}`,{
         name:task.name, description: task.description
       });
+      if(data.success) {
+        const updatedTask = data.updatedTask;
+        const indexOfTask = taskList.findIndex((task) => task.id === id);
+        if(indexOfTask !== -1) {
+          taskList[indexOfTask] = updatedTask;
+        }
+      }
       return data.success;
     } catch (error:unknown) {
       handleAxiosError(error, toast);
@@ -116,7 +130,6 @@ const TimerAndTaskList:React.FC<{tasks: TaskInterface[]}> = ({tasks}) => {
           formatTime={formatTime}
           activeTaskId={activeTaskId}
           handleStartStop={handleStartStop}
-          setTaskList={setTaskList}
           handleUpdateTask={handleUpdateTask}
         />
       </div>
