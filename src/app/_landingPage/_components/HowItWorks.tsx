@@ -1,7 +1,7 @@
 
 import React from "react";
 import { UserPlus, ListTodo, Timer, PieChart } from 'lucide-react';
-import { H2Heading } from "@/components/basic-reusable/headings";
+import { H2Heading } from "@/components/basic-reusable/Headings";
 import StepCard from "./StepCard";
 
 const HowItWorks:React.FC = () => {

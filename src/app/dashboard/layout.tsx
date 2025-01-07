@@ -1,5 +1,5 @@
-import { ThemeProvider } from "@/components/theme-provider";
-import Header from "@/components/header";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import Header from "@/components/Header";
 
 export default function DashboardLayout({
   children,

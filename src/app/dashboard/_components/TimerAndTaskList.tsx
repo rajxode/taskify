@@ -8,7 +8,6 @@ import { TaskInterface } from "@/types/commonType";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { useToast } from "@/hooks/use-toast";
 import { handleAxiosError } from "@/utils/handleAxiosError";
-import { boolean } from "drizzle-orm/mysql-core";
 
 const TimerAndTaskList:React.FC<{tasks: TaskInterface[]}> = ({tasks}) => {
   const {toast} = useToast();

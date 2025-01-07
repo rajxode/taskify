@@ -1,5 +1,7 @@
-import { ThemeProvider } from "@/components/theme-provider";
-import Header from "@/components/header";
+export const dynamic = 'force-dynamic';
+
+import { ThemeProvider } from "@/components/ThemeProvider";
+import Header from "@/components/Header";
 
 export default function AuthLayout({
   children,

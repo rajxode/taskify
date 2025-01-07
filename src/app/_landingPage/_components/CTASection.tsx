@@ -1,7 +1,7 @@
 
 import React from "react";
-import LinkButton from "@/components/basic-reusable/link-button";
-import { H2Heading } from "@/components/basic-reusable/headings";
+import LinkButton from "@/components/basic-reusable/LinkButton";
+import { H2Heading } from "@/components/basic-reusable/Headings";
 
 const CTASection:React.FC = () => {
     return (

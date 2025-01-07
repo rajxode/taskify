@@ -7,25 +7,32 @@ import { axiosInstance } from "@/utils/axiosInstance";
 import { cookies } from "next/headers";
 import AvatarAndMenu from "./header/AvatarAndMenu";
 import { notFound } from "next/navigation";
+import { UserInterface } from "@/types/commonType";
+import { AxiosError } from "axios";
 
 export default async function Header({parent}:{parent:string}) {
-  let user = null;
+  let user:UserInterface | null = null;
   try {
-    const cookieStore = cookies();
-    const token = (await cookieStore).get("token")?.value;
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token")?.value;
     if(token) {
       const {data} = await axiosInstance.get("/users/my-data",{
         headers:{
           Cookie: `token=${token}`
         }
       });
-      if(data.success) {
-        user = data.user;
+      if(data?.success) {
+        user = data?.user;
       }
     }
-  } catch (error:any) {
-    console.log('axios error', error.response.data);
-    // console.log('error', error.message);
+  } catch (error:unknown) {
+    if(error instanceof Error) {
+      console.log('error in getting user data:', error?.message);
+    } else if (error instanceof AxiosError) {
+      console.log('axios error in getting user data:', error.response?.data);
+    } else {
+      console.log("unknown error in getting user data:", error);
+    }
     notFound();
   }
   return (

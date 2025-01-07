@@ -2,8 +2,8 @@
 import Image from "next/image";
 import React from "react";
 import BannerImage from "../../../../public/assets/save-time.png";
-import LinkButton from "@/components/basic-reusable/link-button";
-import { H1Heading } from "@/components/basic-reusable/headings";
+import LinkButton from "@/components/basic-reusable/LinkButton";
+import { H1Heading } from "@/components/basic-reusable/Headings";
 
 const HeroSection:React.FC = () => {
     return (

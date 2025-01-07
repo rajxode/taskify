@@ -23,89 +23,88 @@ const formSchema = z.object({
 });
 
 const SigninForm = () => {
-    const {toast} = useToast();
-    const router = useRouter();
-    const form = useForm < z.infer < typeof formSchema >> ({
-        resolver: zodResolver(formSchema),
-    
-      })
-    
-      async function onSubmit(values: z.infer < typeof formSchema > ) {
-        try {
-          const {data} = await axiosInstance.post("/users/login",values);
-          const {success,message} = data;
-          if(success) {
-            toast({
-              variant:"success",
-              title:"User logged in !!"
-            });
-            form.reset({
-              email:"",
-              password:""
-            })
-            router.push("/dashboard");
-          } else {
-            toast({
-              variant:"destructive",
-              title:message
-            })
-          }
-        } catch (error:unknown) {
-          handleAxiosError(error,toast);
-        }
+  const {toast} = useToast();
+  const router = useRouter();
+  const form = useForm < z.infer < typeof formSchema >> ({
+    resolver: zodResolver(formSchema)
+  });
+  
+  async function onSubmit(values: z.infer < typeof formSchema > ) {
+    try {
+      const {data} = await axiosInstance.post("/users/login",values);
+      const {success,message} = data;
+      if(success) {
+        toast({
+          variant:"success",
+          title:"User logged in !!"
+        });
+        form.reset({
+          email:"",
+          password:""
+        })
+        router.push("/dashboard");
+      } else {
+        toast({
+          variant:"destructive",
+          title:message
+        })
       }
-    return (
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-8 max-w-3xl mx-auto"
-          >
-            
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="your@email.com"
-                      type="email"
-                      {...field}
-                    />
-                  </FormControl>
+    } catch (error:unknown) {
+      handleAxiosError(error,toast);
+    }
+  }
+  return (
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-8 max-w-3xl mx-auto"
+      >
+        
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="your@email.com"
+                  type="email"
+                  {...field}
+                />
+              </FormControl>
 
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input 
-                      placeholder="Your password"
-                      type="password"
-                      {...field} 
-                    />
-                  </FormControl>
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Password</FormLabel>
+              <FormControl>
+                <Input 
+                  placeholder="Your password"
+                  type="password"
+                  {...field} 
+                />
+              </FormControl>
 
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <CustomFormFooter
-              btnText="Sign In"
-              linkSrc="/signup"
-              linkText="Create an account"
-            /> 
-          </form>
-        </Form>
-    )
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <CustomFormFooter
+          btnText="Sign In"
+          linkSrc="/signup"
+          linkText="Create an account"
+        /> 
+      </form>
+    </Form>
+  )
 }
 
 export default SigninForm;
