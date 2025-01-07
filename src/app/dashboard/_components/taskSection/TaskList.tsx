@@ -6,7 +6,6 @@ import TaskListCard from "./TaskListCard";
 interface PropType {
   taskList: TaskInterface[];
   handleDeleteTask: (id: string) => Promise<boolean>;
-  formatTime: (seconds: number) => string;
   isRunning: boolean;
   activeTaskId: string | null;
   handleStartStop: (taskId: string) => void;
@@ -18,7 +17,6 @@ const TaskList: React.FC<PropType> = ({
   handleDeleteTask,
   isRunning,
   activeTaskId,
-  formatTime,
   handleStartStop,
   handleUpdateTask
 }) => {
@@ -28,7 +26,6 @@ const TaskList: React.FC<PropType> = ({
                                   key={task.id}
                                   task={task}
                                   activeTaskId={activeTaskId}
-                                  formatTime={formatTime}
                                   handleDeleteTask={handleDeleteTask}
                                   handleStartStop={handleStartStop}
                                   isRunning={isRunning}

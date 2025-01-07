@@ -6,11 +6,11 @@ import {
     StopCircle,
   } from "lucide-react";
 import TaskMenu from "./TaskMenu";
+import { formatTime } from "@/utils/commonFunctions";
 
 interface PropType {
   task: TaskInterface;
   handleDeleteTask: (id: string) => Promise<boolean>;
-  formatTime: (seconds: number) => string;
   isRunning: boolean;
   activeTaskId: string | null;
   handleStartStop: (taskId: string) => void;
@@ -22,13 +22,12 @@ const TaskListCard:React.FC<PropType> = ({
   handleDeleteTask,
   isRunning,
   activeTaskId,
-  formatTime,
   handleStartStop,
   handleUpdateTask
 }) => {
     return (
         <li
-          className="flex flex-col items-center justify-between p-3 bg-gray-100 dark:bg-gray-700 rounded-lg h-[200px]"
+          className="flex flex-col items-center justify-between p-3 bg-gray-100 dark:bg-gray-700/50 rounded-lg h-[200px]"
         >
           <div className="w-full flex justify-between items-start">
             <div>

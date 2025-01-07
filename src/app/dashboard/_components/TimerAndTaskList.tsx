@@ -1,9 +1,9 @@
 
 "use client";
 import React, { useState, useEffect } from "react";
-import TimerBlock from "./TimerBlock";
-import AddTask from "./AddTask";
-import TaskList from "./TaskList";
+import TimerBlock from "./timerSection/TimerBlock";
+import AddTask from "./taskSection/AddTask";
+import TaskList from "./taskSection/TaskList";
 import { TaskInterface } from "@/types/commonType";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { useToast } from "@/hooks/use-toast";
@@ -38,13 +38,6 @@ const TimerAndTaskList:React.FC<{tasks: TaskInterface[]}> = ({tasks}) => {
       if (interval) clearInterval(interval);
     };
   }, [isRunning, timer, activeTaskId]);
-
-  const formatTime = (seconds: number) => {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const remainingSeconds = seconds % 60;
-    return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
-  };
 
   const handlePauseResume = (taskId:string) => {
     if (isRunning) {
@@ -105,10 +98,10 @@ const TimerAndTaskList:React.FC<{tasks: TaskInterface[]}> = ({tasks}) => {
   return (
     <>
       <TimerBlock
+        isRunning={isRunning}
         tasks={taskList} 
         timer={timer}
         activeTaskId={activeTaskId} 
-        formatTime={formatTime} 
       />
       <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6 overflow-y-auto relative">
         <div className="flex justify-between items-center mb-4">
@@ -126,7 +119,6 @@ const TimerAndTaskList:React.FC<{tasks: TaskInterface[]}> = ({tasks}) => {
           taskList={taskList}
           handleDeleteTask={handleDeleteTask} 
           isRunning={isRunning}
-          formatTime={formatTime}
           activeTaskId={activeTaskId}
           handleStartStop={handleStartStop}
           handleUpdateTask={handleUpdateTask}
