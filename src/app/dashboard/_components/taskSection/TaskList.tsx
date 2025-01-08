@@ -21,16 +21,21 @@ const TaskList: React.FC<PropType> = ({
   handleUpdateTask
 }) => {
   return (
-    <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {taskList?.map((task) => <TaskListCard 
-                                  key={task.id}
-                                  task={task}
-                                  activeTaskId={activeTaskId}
-                                  handleDeleteTask={handleDeleteTask}
-                                  handleStartStop={handleStartStop}
-                                  isRunning={isRunning}
-                                  handleUpdateTask={handleUpdateTask}
-                                />)}
+    <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        taskList
+        ?.map(
+          (task) => <TaskListCard 
+                      key={task.id}
+                      task={task}
+                      activeTaskId={activeTaskId}
+                      handleDeleteTask={handleDeleteTask}
+                      handleStartStop={handleStartStop}
+                      isRunning={isRunning}
+                      handleUpdateTask={handleUpdateTask}
+                    />
+                  )
+      }
     </ul>
   );
 };

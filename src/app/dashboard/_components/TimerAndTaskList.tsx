@@ -39,20 +39,44 @@ const TimerAndTaskList:React.FC<{tasks: TaskInterface[]}> = ({tasks}) => {
     };
   }, [isRunning, timer, activeTaskId]);
 
-  const handlePauseResume = (taskId:string) => {
+  const handlePauseResume = () => {
     if (isRunning) {
       setIsRunning(false);
     } else {
       setIsRunning(true);
-      // setTimer(tasks.find((task) => task.id === taskId)?.lastTimerDuration || 0);
     }
   }
 
-  const handleStartStop = (taskId: string) => {
-    if (isRunning && activeTaskId === taskId) {
+  const handleCancelClick = () => {
+    if(isRunning || activeTaskId) {
       setIsRunning(false);
       setActiveTaskId(null);
+      setTimer(0);
+    }
+  }
+
+  const handleStartStop = async(taskId: string) => {
+    if (isRunning || activeTaskId === taskId) {
+      try {
+        // const {data} = await axiosInstance.post(`/task/${taskId}/add-time-entry`);
+        // if(data?.success) {
+        //   toast({
+        //     variant:"success",
+        //     "title":"Session recorded"
+        //   })
+          setTimer(0);
+          setIsRunning(false);
+          setActiveTaskId(null);
+        // }
+      } catch (error:unknown) {
+        handleAxiosError(error, toast);
+      }
     } else {
+      try {
+        
+      } catch (error) {
+        
+      }
       setIsRunning(true);
       setActiveTaskId(taskId);
       setTimer(tasks.find((task) => task.id === taskId)?.lastTimerDuration || 0);
@@ -102,6 +126,9 @@ const TimerAndTaskList:React.FC<{tasks: TaskInterface[]}> = ({tasks}) => {
         tasks={taskList} 
         timer={timer}
         activeTaskId={activeTaskId} 
+        handleStartStop={handleStartStop}
+        handleCancelClick={handleCancelClick}
+        handlePauseResume={handlePauseResume}
       />
       <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6 overflow-y-auto relative">
         <div className="flex justify-between items-center mb-4">
