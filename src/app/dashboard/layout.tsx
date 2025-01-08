@@ -8,7 +8,7 @@ export default function DashboardLayout({
 }) {
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <div className="bg-gray-200 dark:bg-inherit min-h-screen">
+      <div className="bg-gray-200 dark:bg-[#121212] min-h-screen">
         <Header parent="" />
         <main className="flex-grow flex items-center justify-center px-4 sm:px-6 lg:px-8">
           {children}

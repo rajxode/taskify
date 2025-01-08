@@ -11,7 +11,7 @@ const LandingPage:React.FC = () => {
     return (
         <>
             <Header parent="main" />
-            <div className="w-full min-h-screen flex justify-center items-center"
+            <div className="w-full flex justify-center items-center"
             >
                 <div className="w-full flex flex-col items-center justify-center max-w-[1200px]">
                     <HeroSection />

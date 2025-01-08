@@ -39,7 +39,7 @@ export default async function Header({parent}:{parent:string}) {
     <header
       className="py-4 px-4 sm:px-6 lg:px-8 sticky top-0 z-10 bg-gradient-to-r 
         from-gray-100/80 to-white/80 
-        dark:from-gray-900/90 dark:to-[#121212]/80 
+        dark:from-[#171717] dark:to-[#121212]/80 
         backdrop-blur-sm transition-shadow duration-300 border-b border-gray-200 
       dark:border-gray-700 shadow-sm"
     >

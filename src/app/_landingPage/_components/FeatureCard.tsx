@@ -13,7 +13,7 @@ const FeatureCard: React.FC<FeatureProps> = ({ icon, title, heading, description
     <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
       <CardContent className="p-6 flex flex-col justify-center">
         <div className="w-fit h-fit p-3 rounded-full bg-gradient-to-br 
-          from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600"
+          from-gray-100 to-gray-200 dark:from-gray-600 dark:to-gray-700"
         >
           {icon}
         </div>

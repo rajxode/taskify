@@ -10,8 +10,8 @@ export default function AuthLayout({
 }) {
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <div className="min-h-screen flex flex-col bg-gradient-to-br from-white to-gray-100
-        dark:to-[#121212]/80 dark:from-gray-900/80"
+      <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-100 to-gray-300
+        dark:to-[#121212] dark:from-[#121212]/80"
       >
         <Header parent="" />
         <main className="flex-grow flex items-center justify-center px-4 sm:px-6 lg:px-8">

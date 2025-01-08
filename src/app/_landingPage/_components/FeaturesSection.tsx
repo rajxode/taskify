@@ -9,7 +9,7 @@ const FeatureSection:React.FC = () => {
   return (
     <section
       id="features"
-      className="w-full py-12 md:py-24 lg:py-32 "
+      className="w-full py-12"
     >
       <AosWrapper>
         <div  data-aos="fade-up" className="container px-4 md:px-6 mx-auto">

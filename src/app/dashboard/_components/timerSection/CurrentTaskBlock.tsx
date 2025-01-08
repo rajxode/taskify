@@ -42,7 +42,7 @@ const CurrentTaskBlock: React.FC<PropType> = ({
   }
   return (
     <>
-      <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-4 sm:p-6 col-span-3 md:col-span-2">
+      <div className="bg-white dark:bg-[#171717] shadow rounded-lg p-4 sm:p-6 col-span-3 md:col-span-2 border">
         <div className="w-full flex justify-between items-center mb-2">
           <h2 className="text-xl font-semibold text-[#36621f] dark:text-white">
             Current Timer

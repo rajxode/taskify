@@ -32,7 +32,7 @@ export default function RootLayout({
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <main className="flex-grow bg-gradient-to-br from-white to-gray-100
-            dark:to-[#121212]/80 dark:from-gray-900/80 ">
+            dark:to-[#121212]/80 dark:from-[#171717]/80">
             {children}
             <Toaster />
           </main>

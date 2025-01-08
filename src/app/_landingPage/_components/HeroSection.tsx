@@ -6,13 +6,14 @@ import LinkButton from "@/components/basic-reusable/LinkButton";
 import { H1Heading } from "@/components/basic-reusable/Headings";
 
 const HeroSection:React.FC = () => {
-    return (
-      <section className="w-full py-12 md:py-24 ">
+  return (
+    <section className="w-full min-h-screen flex justify-center items-center">
       <div className="container px-4 md:px-6 mx-auto flex flex-col md:flex-row justify-between">
         <div className="w-full md:w-1/2 flex flex-col items-center space-y-4 py-3">
           <H1Heading
           >
-            Track Your <span className="text-[#36621f] dark:text-[#3ecf8e]">Time</span>, Boost Your <span className="text-[#36621f] dark:text-[#3ecf8e]">Productivity</span>
+            Track Your <span className="text-[#36621f] dark:text-[#3ecf8e]">Time</span>, 
+            Boost Your <span className="text-[#36621f] dark:text-[#3ecf8e]">Productivity</span>
           </H1Heading>
           <p className="mx-auto max-w-[700px] text-[#374151] dark:text-gray-400 tracking-wide">
             Effortlessly manage your tasks and track your time with Taskify. 

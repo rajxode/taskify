@@ -33,7 +33,7 @@ const TimerBlock: React.FC<PropType> = ({
         handleStartStop={handleStartStop}
         handlePauseResume={handlePauseResume}
       />
-      <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6 hidden md:block">
+      <div className="bg-white dark:bg-[#171717] border shadow rounded-lg p-6 hidden md:block">
         <ActivityStatsBlock />
       </div>
     </div>

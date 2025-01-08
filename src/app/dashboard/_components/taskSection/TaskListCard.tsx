@@ -38,7 +38,7 @@ const TaskListCard:React.FC<PropType> = ({
     <>
       <li
         className="flex flex-col items-center justify-between p-3 bg-gray-100 
-        dark:bg-gray-700/50 rounded-lg h-[200px]"
+        dark:bg-[#212121] border rounded-lg h-[200px]"
       >
         <div className="w-full flex justify-between items-start">
           <div>

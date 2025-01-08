@@ -130,7 +130,7 @@ const TimerAndTaskList:React.FC<{tasks: TaskInterface[]}> = ({tasks}) => {
         handleCancelClick={handleCancelClick}
         handlePauseResume={handlePauseResume}
       />
-      <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6 overflow-y-auto relative">
+      <div className="bg-white dark:bg-[#171717] border shadow rounded-lg p-6 overflow-y-auto relative">
         <div className="flex justify-between items-center mb-4">
           <div>
             <h2 className="text-xl font-semibold text-[#36621f] dark:text-white">
