@@ -11,7 +11,7 @@ interface PropType {
   timer: number;
   tasks: TaskInterface[];
   activeTaskId: string | null;
-  handleCancelClick: () => void;
+  handleCancelClick: (taskId:string) => void;
   handleStartStop: (taskId: string) => Promise<void>;
   handlePauseResume: (taskId: string) => void;
 }
@@ -32,13 +32,13 @@ const CurrentTaskBlock: React.FC<PropType> = ({
     setIsPaused(!isPaused);
     handlePauseResume(activeTaskId!);
   }
-  const cancelClickHandler = () => {
+  const cancelClickHandler = async() => {
     setIsPaused(false);
-    handleCancelClick();
+    await handleCancelClick(activeTaskId!);
   }
-  const stopClickHandler = () => {
+  const stopClickHandler = async () => {
     setIsPaused(false);
-    handleStartStop(activeTaskId!);
+    await handleStartStop(activeTaskId!);
   }
   return (
     <>

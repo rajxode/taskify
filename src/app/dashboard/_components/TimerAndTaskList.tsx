@@ -47,39 +47,54 @@ const TimerAndTaskList:React.FC<{tasks: TaskInterface[]}> = ({tasks}) => {
     }
   }
 
-  const handleCancelClick = () => {
-    if(isRunning || activeTaskId) {
-      setIsRunning(false);
-      setActiveTaskId(null);
-      setTimer(0);
+  const handleCancelClick = async(taskId:string) => {
+    if(isRunning || activeTaskId === taskId) {
+      const entryId = localStorage.getItem("entryId");
+      try {
+        const {data} = await axiosInstance.delete(`/task/${taskId}/update-entry/${entryId}`);
+        if(data?.success) {
+          setIsRunning(false);
+          setActiveTaskId(null);
+          setTimer(0); 
+          localStorage.removeItem("entryId");
+        }
+      } catch (error:unknown) {
+        handleAxiosError(error,toast);
+      }
     }
   }
 
   const handleStartStop = async(taskId: string) => {
     if (isRunning || activeTaskId === taskId) {
       try {
-        // const {data} = await axiosInstance.post(`/task/${taskId}/add-time-entry`);
-        // if(data?.success) {
-        //   toast({
-        //     variant:"success",
-        //     "title":"Session recorded"
-        //   })
+        const entryId = localStorage.getItem("entryId");
+        const {data} = await axiosInstance.put(`/task/${taskId}/update-entry/${entryId}`);
+        if(data?.success) {
+          toast({
+            variant:"success",
+            "title":"Session recorded"
+          })
           setTimer(0);
           setIsRunning(false);
           setActiveTaskId(null);
-        // }
+          localStorage.removeItem("entryId");
+        }
       } catch (error:unknown) {
         handleAxiosError(error, toast);
       }
     } else {
       try {
-        
-      } catch (error) {
-        
+        const {data} = await axiosInstance.post(`/task/${taskId}/add-time-entry`);
+        if(data?.success) {
+          const entryId = data?.entryId;
+          localStorage.setItem("entryId",entryId);
+          setIsRunning(true);
+          setActiveTaskId(taskId);
+          setTimer(tasks.find((task) => task.id === taskId)?.lastTimerDuration || 0);
+        }
+      } catch (error:unknown) {
+        handleAxiosError(error, toast);
       }
-      setIsRunning(true);
-      setActiveTaskId(taskId);
-      setTimer(tasks.find((task) => task.id === taskId)?.lastTimerDuration || 0);
     }
   };
 

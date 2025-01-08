@@ -1,4 +1,4 @@
-import { timeEntries } from "@/db/schema";
+import { taskTable, timeEntries } from "@/db/schema";
 import { TaskInterface, TimeEntryInterface } from "@/types/commonType";
 import { handleApiError } from "@/utils/handleApiError";
 import { and, eq, InferSelectModel, isNull, sql } from "drizzle-orm";
@@ -57,10 +57,68 @@ export async function PUT(
       )
       .returning();
     const entry: TimeEntryInterface = entries[0];
+    await db
+      .update(taskTable)
+      .set({
+        lastPerformedAt:entry?.endTime,
+        lastTimerDuration:entry?.durationSeconds
+      })
+      .where(
+        eq(taskTable.id, id)
+      );
     return NextResponse.json(
       {
         success: true,
         entry,
+      },
+      {
+        status: 201,
+      }
+    );
+  } catch (error: unknown) {
+    return handleApiError(error);
+  }
+}
+
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string; entryId: string }> }
+) {
+  try {
+    const { id, entryId } = await params;
+    const result = await fetch(
+      `${process.env.NEXT_PUBLIC_BASEURL}/api/task/${id}`,
+      {
+        headers: {
+          Cookie: `token=${req.cookies.get("token")?.value}`,
+        },
+      }
+    );
+    const data = await result.json();
+    const { success, message, task }: ResData = data;
+    if (!success) {
+      return NextResponse.json(
+        {
+          success: false,
+          message,
+        },
+        {
+          status: result.status,
+        }
+      );
+    }
+    await db
+      .delete(timeEntries)
+      .where(
+        and(
+          eq(timeEntries.taskId, id), 
+          eq(timeEntries.id, entryId)
+        )
+      );
+    return NextResponse.json(
+      {
+        success: true,
       },
       {
         status: 201,

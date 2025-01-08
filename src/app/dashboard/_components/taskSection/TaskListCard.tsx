@@ -28,11 +28,12 @@ const TaskListCard:React.FC<PropType> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const handleStartClick = (e:React.MouseEvent<HTMLButtonElement>) => {
-    if(isRunning && activeTaskId !== task?.id) {
-      setIsOpen(true);
+    if((isRunning && activeTaskId === task?.id) || (!isRunning && activeTaskId === task?.id) || !activeTaskId) {
+      handleStartStop(task?.id);
       return;
     }
-    handleStartStop(task?.id);
+    setIsOpen(true);
+    return;
   }
   return (
     <>

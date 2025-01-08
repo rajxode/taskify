@@ -8,7 +8,7 @@ interface PropType {
   timer: number;
   tasks: TaskInterface[];
   activeTaskId: string | null;
-  handleCancelClick: () => void;
+  handleCancelClick: (taskId:string) => void;
   handleStartStop: (taskId: string) => Promise<void>;
   handlePauseResume: (taskId: string) => void;
 }
