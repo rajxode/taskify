@@ -8,9 +8,11 @@ import { TaskInterface, TimeEntryInterface } from "@/types/commonType";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { useToast } from "@/hooks/use-toast";
 import { handleAxiosError } from "@/utils/handleAxiosError";
+import {Loader} from "@/components/loader/Loader";
 
 const TimerAndTaskList:React.FC<{tasks: TaskInterface[]}> = ({tasks}) => {
   const {toast} = useToast();
+  const [isLoading, setIsLoading] = useState(false);
   const [taskList, setTaskList] = useState<TaskInterface[]>(tasks);
   const [timer, setTimer] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
@@ -56,6 +58,7 @@ const TimerAndTaskList:React.FC<{tasks: TaskInterface[]}> = ({tasks}) => {
   }
 
   const handleStartStop = async(taskId: string) => {
+    setIsLoading(true);
     if (isRunning || activeTaskId === taskId) {
       try {
         const entryId = localStorage.getItem("entryId");
@@ -100,6 +103,7 @@ const TimerAndTaskList:React.FC<{tasks: TaskInterface[]}> = ({tasks}) => {
         handleAxiosError(error, toast);
       }
     }
+    setIsLoading(false);
   };
 
   const handleDeleteTask = async(id: string):Promise<boolean> =>  {
@@ -140,6 +144,7 @@ const TimerAndTaskList:React.FC<{tasks: TaskInterface[]}> = ({tasks}) => {
   }
   return (
     <>
+      <Loader isLoading={isLoading} />
       <TimerBlock
         isRunning={isRunning}
         tasks={taskList} 
