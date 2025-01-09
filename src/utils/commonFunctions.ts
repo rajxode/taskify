@@ -6,3 +6,7 @@ export const formatTime = (seconds: number) => {
     const remainingSeconds = seconds % 60;
     return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
 };
+
+export const firstLetterUpper = (str:string) => {
+    return (str.slice(0,1).toUpperCase() + str.slice(1));
+}

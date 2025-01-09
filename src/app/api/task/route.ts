@@ -4,7 +4,7 @@ import { db } from "@/db";
 import { getTokenData } from "@/utils/getTokenData";
 import { handleApiError, unAuthorizedError } from "@/utils/handleApiError";
 import { taskTable } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 
 export async function GET(req:NextRequest) {
     try {
@@ -13,7 +13,11 @@ export async function GET(req:NextRequest) {
             return unAuthorizedError();
         }
         const userId = token?.id as string;
-        const taskList = await db.select().from(taskTable).where(eq(taskTable.userId, userId));
+        const taskList = await db
+                            .select()
+                            .from(taskTable)
+                            .where(eq(taskTable.userId, userId))
+                            .orderBy(asc(taskTable.createdAt));
         if(!taskList) {
             return NextResponse.json({
                     success:true,

@@ -153,7 +153,7 @@ const TimerAndTaskList:React.FC<{tasks: TaskInterface[]}> = ({tasks}) => {
         <div className="flex justify-between items-center mb-4">
           <div>
             <h2 className="text-xl font-semibold text-[#36621f] dark:text-white">
-              Tasks
+              All Tasks
             </h2>
           </div>
           <AddTask 
@@ -161,15 +161,23 @@ const TimerAndTaskList:React.FC<{tasks: TaskInterface[]}> = ({tasks}) => {
             taskList={taskList}
           />
         </div>
-        <TaskList
-          timer={timer}
-          taskList={taskList}
-          handleDeleteTask={handleDeleteTask} 
-          isRunning={isRunning}
-          activeTaskId={activeTaskId}
-          handleStartStop={handleStartStop}
-          handleUpdateTask={handleUpdateTask}
-        />
+        {
+          taskList.length > 0
+          ?
+            <TaskList
+              timer={timer}
+              taskList={taskList}
+              handleDeleteTask={handleDeleteTask} 
+              isRunning={isRunning}
+              activeTaskId={activeTaskId}
+              handleStartStop={handleStartStop}
+              handleUpdateTask={handleUpdateTask}
+            />
+          :
+            <div className="w-full flex items-center justify-center text-gray-400 text-sm dark:text-gray-300 tracking-wide">
+              Your journey to productivity begins here—create your first task and make it count!
+            </div>
+        }
       </div>
     </>
   )

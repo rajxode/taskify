@@ -25,3 +25,11 @@ export interface TimeEntryInterface {
     endTime:Date|null;
     durationSeconds:number;
 }
+
+export interface ActivityStatsInterface {
+    totalTime: number | null;
+    todayTime: number | null;
+    mostActive: string | null;
+    lastTask: string | null;
+    lastActivity: number | null;
+}

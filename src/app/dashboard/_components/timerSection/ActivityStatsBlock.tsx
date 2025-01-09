@@ -1,7 +1,27 @@
 
-import React from "react";
+import { useToast } from "@/hooks/use-toast";
+import { ActivityStatsInterface } from "@/types/commonType";
+import { axiosInstance } from "@/utils/axiosInstance";
+import { firstLetterUpper, formatTime } from "@/utils/commonFunctions";
+import { handleAxiosError } from "@/utils/handleAxiosError";
+import React, { useEffect, useState } from "react";
 
 const ActivityStatsBlock = () => {
+    const {toast} = useToast();
+    const [myStats, setMyStats] = useState<ActivityStatsInterface|null>(null);
+    const getStats = async() => {
+        try {
+            const {data} = await axiosInstance.get("/users/my-data/activity-stats");
+            if(data.success) {
+                setMyStats(data?.stats);
+            }
+        } catch (error:unknown) {
+            handleAxiosError(error,toast);
+        }
+    }
+    useEffect(() => {
+        getStats();
+    },[]);
     return (
         <>
             <h2 className="text-xl font-semibold text-[#36621f] dark:text-white mb-4">
@@ -13,7 +33,7 @@ const ActivityStatsBlock = () => {
                         Total Time Spent
                     </div>
                     <div>
-                        04:56:00
+                        {formatTime(myStats?.totalTime || 0)}
                     </div>
                 </div>
                 <div className="w-full p-2 px-3 mb-3 text-sm bg-gray-100 dark:bg-[#212121] border rounded-md shadow flex justify-between items-center">
@@ -21,7 +41,7 @@ const ActivityStatsBlock = () => {
                         Today&apos;s Activity
                     </div>
                     <div>
-                        00:36:00
+                    {formatTime(myStats?.todayTime || 0)}
                     </div>
                 </div>
                 <div className="w-full p-2 px-3 mb-3 text-sm bg-gray-100 dark:bg-[#212121] border rounded-md shadow flex justify-between items-center">
@@ -29,7 +49,13 @@ const ActivityStatsBlock = () => {
                         Most Active Task
                     </div>
                     <div>
-                        Running
+                        {
+                            myStats?.mostActive
+                            ?
+                                firstLetterUpper(myStats?.mostActive)
+                            :
+                                "none"
+                        }
                     </div>
                 </div>
                 <div className="w-full p-2 px-3 mb-3 text-sm bg-gray-100 dark:bg-[#212121] border rounded-md shadow flex justify-between items-center">
@@ -37,7 +63,13 @@ const ActivityStatsBlock = () => {
                         Last Task Performed
                     </div>
                     <div>
-                        Reading
+                        {
+                            myStats?.lastTask
+                            ?
+                                firstLetterUpper(myStats?.lastTask)
+                            :
+                                "none"
+                        }
                     </div>
                 </div>
                 <div className="w-full p-2 px-3 mb-3 text-sm bg-gray-100 dark:bg-[#212121] border rounded-md shadow flex justify-between items-center">
@@ -45,7 +77,7 @@ const ActivityStatsBlock = () => {
                         Last Activity
                     </div>
                     <div>
-                        00:15:50
+                        {formatTime(myStats?.lastActivity || 0)}
                     </div>
                 </div>
             </div>
