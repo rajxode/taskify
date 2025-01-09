@@ -43,7 +43,7 @@ const AvatarAndMenu:React.FC<{user:UserInterface}> = ({user}) => {
                     <AvatarFallback className="bg-gray-300 dark:bg-[#242424]">{user?.name[0].toUpperCase()}</AvatarFallback>
                 </Avatar>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-gray-50 dark:bg-[#212121] md:min-w-[150px] mr-3">
+            <DropdownMenuContent className="md:min-w-[150px] mr-3">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>My Profile</DropdownMenuItem>

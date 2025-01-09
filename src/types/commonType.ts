@@ -13,7 +13,7 @@ export interface TaskInterface {
     description:string | null;
     userId:string;
     lastTimerDuration:number;
-    lastPerformAt?:Date | null;
+    lastPerformedAt?:Date | null;
     createdAt:Date;
 }
 

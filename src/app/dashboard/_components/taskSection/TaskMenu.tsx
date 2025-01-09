@@ -35,11 +35,11 @@ const TaskMenu: React.FC<PropType> = ({
       <Dialog>
         <DropdownMenu>
           <DropdownMenuTrigger className="focus:outline-none border-none">
-            <div className="w-fit h-fit rounded-full hover:bg-gray-300 dark:hover:bg-gray-500 px-1 py-1 cursor-pointer">
+            <div className="w-fit h-fit rounded-full hover:bg-gray-300 dark:hover:bg-[#494949] px-1 py-1 cursor-pointer">
               <EllipsisVertical />
             </div>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="bg-gray-50 dark:bg-slate-800 md:min-w-[150px] mr-3">
+          <DropdownMenuContent className="md:min-w-[150px] mr-3 border">
           <DialogTrigger asChild>
             <DropdownMenuItem className="cursor-pointer">
                 Update

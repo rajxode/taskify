@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import TimerBlock from "./timerSection/TimerBlock";
 import AddTask from "./taskSection/AddTask";
 import TaskList from "./taskSection/TaskList";
-import { TaskInterface } from "@/types/commonType";
+import { TaskInterface, TimeEntryInterface } from "@/types/commonType";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { useToast } from "@/hooks/use-toast";
 import { handleAxiosError } from "@/utils/handleAxiosError";
@@ -21,15 +21,6 @@ const TimerAndTaskList:React.FC<{tasks: TaskInterface[]}> = ({tasks}) => {
     if (isRunning) {
       interval = setInterval(() => {
         setTimer((prevTimer) => prevTimer + 1);
-        if (activeTaskId) {
-          setTaskList((prevTasks) =>
-            prevTasks.map((task) =>
-              task.id === activeTaskId
-                ? { ...task, lastTimerDuration: task.lastTimerDuration + 1 }
-                : task
-            )
-          );
-        }
       }, 1000);
     } else if (!isRunning && timer !== 0) {
       if (interval) clearInterval(interval);
@@ -74,6 +65,19 @@ const TimerAndTaskList:React.FC<{tasks: TaskInterface[]}> = ({tasks}) => {
             variant:"success",
             "title":"Session recorded"
           })
+          
+          const entry:TimeEntryInterface = data?.entry;
+          setTaskList(
+            (prev) => 
+              prev.map(
+                (task) => 
+                  task.id === activeTaskId 
+                  ? 
+                    {...task, lastPerformedAt:entry.startTime, lastTimerDuration:entry.durationSeconds } 
+                  : 
+                  task
+                )
+          )
           setTimer(0);
           setIsRunning(false);
           setActiveTaskId(null);
@@ -90,7 +94,7 @@ const TimerAndTaskList:React.FC<{tasks: TaskInterface[]}> = ({tasks}) => {
           localStorage.setItem("entryId",entryId);
           setIsRunning(true);
           setActiveTaskId(taskId);
-          setTimer(tasks.find((task) => task.id === taskId)?.lastTimerDuration || 0);
+          setTimer(0);
         }
       } catch (error:unknown) {
         handleAxiosError(error, toast);
@@ -158,6 +162,7 @@ const TimerAndTaskList:React.FC<{tasks: TaskInterface[]}> = ({tasks}) => {
           />
         </div>
         <TaskList
+          timer={timer}
           taskList={taskList}
           handleDeleteTask={handleDeleteTask} 
           isRunning={isRunning}

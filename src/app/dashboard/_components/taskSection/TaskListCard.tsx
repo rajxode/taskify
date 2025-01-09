@@ -10,6 +10,7 @@ import { formatTime } from "@/utils/commonFunctions";
 import AlertDialog from "@/components/alert-dialog/AlertDialog";
 
 interface PropType {
+  timer:number;
   task: TaskInterface;
   handleDeleteTask: (id: string) => Promise<boolean>;
   isRunning: boolean;
@@ -19,6 +20,7 @@ interface PropType {
 }
 
 const TaskListCard:React.FC<PropType> = ({
+  timer,
   task,
   handleDeleteTask,
   isRunning,
@@ -43,7 +45,7 @@ const TaskListCard:React.FC<PropType> = ({
       >
         <div className="w-full flex justify-between items-start">
           <div>
-            <h3 className="text-2xl font-medium text-gray-900 dark:text-white">
+            <h3 className="text-xl font-medium text-gray-900 dark:text-white">
               {task.name.slice(0,1).toUpperCase() + task.name.slice(1)}
             </h3>
             <div className="text-xs text-gray-500 dark:text-gray-400">
@@ -60,12 +62,12 @@ const TaskListCard:React.FC<PropType> = ({
           />
         </div>
 
-        <div className="w-full flex flex-col text-xs md:text-sm">
-          <div className="mb-2">
+        <div className="w-full flex flex-col text-xs">
+          <div className="mb-2 tracking-wider">
             {
-              task.lastPerformAt
+              task?.lastPerformedAt
               ?
-                "Last Activity: " + (new Date(task.lastPerformAt).toDateString()) 
+                "Last Active: " + (new Date(task.lastPerformedAt).toDateString()) 
               :
                 "This task hasn't been performed yet."
             }
@@ -74,11 +76,15 @@ const TaskListCard:React.FC<PropType> = ({
           <div>
             <p className="text-gray-500 dark:text-gray-400">
               {
-                task.id === activeTaskId
+                (task.id === activeTaskId)
                 ?
-                  "Current: " + formatTime(task.lastTimerDuration)
+                  "Time: " + formatTime(timer)
                 :
-                  null
+                  (task.lastTimerDuration)
+                  ?
+                    "Activity: " + formatTime(task.lastTimerDuration)
+                  :
+                    null
               }
             </p>
           </div>

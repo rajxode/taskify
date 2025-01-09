@@ -4,6 +4,7 @@ import { TaskInterface } from "@/types/commonType";
 import TaskListCard from "./TaskListCard";
 
 interface PropType {
+  timer:number;
   taskList: TaskInterface[];
   handleDeleteTask: (id: string) => Promise<boolean>;
   isRunning: boolean;
@@ -13,6 +14,7 @@ interface PropType {
 }
 
 const TaskList: React.FC<PropType> = ({
+  timer,
   taskList,
   handleDeleteTask,
   isRunning,
@@ -25,7 +27,8 @@ const TaskList: React.FC<PropType> = ({
       {
         taskList
         ?.map(
-          (task) => <TaskListCard 
+          (task) => <TaskListCard
+                      timer={timer}
                       key={task.id}
                       task={task}
                       activeTaskId={activeTaskId}
