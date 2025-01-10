@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -26,11 +27,13 @@ const formSchema = z.object({
 const SignupForm = () => {
   const router = useRouter();
   const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
     try {
       const { data } = await axiosInstance.post(
         "/users/create-account",
@@ -56,6 +59,8 @@ const SignupForm = () => {
       }
     } catch (error: unknown) {
       handleAxiosError(error,toast);
+    } finally {
+      setIsLoading(false);
     }
   }
   return (
@@ -109,6 +114,7 @@ const SignupForm = () => {
           )}
         />
         <CustomFormFooter
+          isLoading={isLoading}
           btnText="Sign Up"
           linkSrc="/signin"
           linkText="Already have an account?"

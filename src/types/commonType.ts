@@ -33,3 +33,9 @@ export interface ActivityStatsInterface {
     lastTask: string | null;
     lastActivity: number | null;
 }
+
+export interface GoToTaskInterface {
+    taskId:string;
+    taskName:string;
+    totalDuration:number;
+}

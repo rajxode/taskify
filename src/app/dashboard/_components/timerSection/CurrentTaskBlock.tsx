@@ -59,7 +59,10 @@ const CurrentTaskBlock: React.FC<PropType> = ({
                 </button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[425px]">
-                <ActivityStatsBlock />
+                <ActivityStatsBlock
+                  isRunning={isRunning}
+                  activeTaskId={activeTaskId}
+                />
               </DialogContent>
             </Dialog>
           </div>

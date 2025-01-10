@@ -16,6 +16,7 @@ import CustomFormFooter from "@/components/auth-components/CustomFormFooter";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { useRouter } from "next/navigation";
 import { handleAxiosError } from "@/utils/handleAxiosError";
+import { useState } from "react";
 
 const formSchema = z.object({
   email: z.string().email().toLowerCase().trim(),
@@ -25,11 +26,13 @@ const formSchema = z.object({
 const SigninForm = () => {
   const {toast} = useToast();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm < z.infer < typeof formSchema >> ({
     resolver: zodResolver(formSchema)
   });
   
   async function onSubmit(values: z.infer < typeof formSchema > ) {
+    setIsLoading(true);
     try {
       const {data} = await axiosInstance.post("/users/login",values);
       const {success,message} = data;
@@ -51,6 +54,8 @@ const SigninForm = () => {
       }
     } catch (error:unknown) {
       handleAxiosError(error,toast);
+    } finally {
+      setIsLoading(false);
     }
   }
   return (
@@ -98,6 +103,7 @@ const SigninForm = () => {
           )}
         />
         <CustomFormFooter
+          isLoading={isLoading}
           btnText="Sign In"
           linkSrc="/signup"
           linkText="Create an account"

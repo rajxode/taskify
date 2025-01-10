@@ -46,15 +46,14 @@ const AvatarAndMenu:React.FC<{user:UserInterface}> = ({user}) => {
             <DropdownMenuContent className="md:min-w-[150px] mr-3">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>My Profile</DropdownMenuItem>
-                <DropdownMenuItem>
-                <button
+                <DropdownMenuItem className="cursor-pointer">My Profile</DropdownMenuItem>
+                <DropdownMenuItem
+                    className="cursor-pointer"
                     onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
                 >
                     {theme === "dark" ? "Light" : "Dark"}&nbsp;Mode
-                </button>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleLogoutClick}>
+                <DropdownMenuItem className="cursor-pointer" onClick={handleLogoutClick}>
                     Log out
                 </DropdownMenuItem>
             </DropdownMenuContent>

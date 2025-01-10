@@ -34,7 +34,10 @@ const TimerBlock: React.FC<PropType> = ({
         handlePauseResume={handlePauseResume}
       />
       <div className="bg-white dark:bg-[#171717] border shadow rounded-lg p-6 hidden md:block">
-        <ActivityStatsBlock />
+        <ActivityStatsBlock 
+          isRunning={isRunning}
+          activeTaskId={activeTaskId}
+        />
       </div>
     </div>
   );

@@ -1,12 +1,17 @@
 
+import React, { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { ActivityStatsInterface } from "@/types/commonType";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { firstLetterUpper, formatTime } from "@/utils/commonFunctions";
 import { handleAxiosError } from "@/utils/handleAxiosError";
-import React, { useEffect, useState } from "react";
 
-const ActivityStatsBlock = () => {
+interface PropType {
+    isRunning:boolean;
+    activeTaskId:string | null;
+}
+
+const ActivityStatsBlock:React.FC<PropType> = ({isRunning, activeTaskId}) => {
     const {toast} = useToast();
     const [myStats, setMyStats] = useState<ActivityStatsInterface|null>(null);
     const getStats = async() => {
@@ -20,8 +25,10 @@ const ActivityStatsBlock = () => {
         }
     }
     useEffect(() => {
-        getStats();
-    },[]);
+        if(!isRunning && !activeTaskId) {
+            getStats();
+        }
+    },[isRunning, activeTaskId]);
     return (
         <>
             <h2 className="text-xl font-semibold text-[#36621f] dark:text-white mb-4">

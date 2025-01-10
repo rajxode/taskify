@@ -5,11 +5,13 @@ import { axiosInstance } from "@/utils/axiosInstance";
 import { cookies } from "next/headers";
 import TimerAndTaskList from "./_components/TimerAndTaskList";
 import { notFound, redirect } from "next/navigation";
-import { TaskInterface } from "@/types/commonType";
+import { GoToTaskInterface, TaskInterface } from "@/types/commonType";
 import { AxiosError } from "axios";
+import { frequentTasks } from "@/server-actions/action";
 
 export default async function Dashboard() {
   let tasks : TaskInterface[] = [];
+  let goToList : GoToTaskInterface[] = [];
   try {
     const cookieStore = cookies();
     const token = (await cookieStore).get("token")?.value;
@@ -25,6 +27,10 @@ export default async function Dashboard() {
       throw new Error("Something went wrong");
     } 
     tasks = data?.tasks;
+    const result = await frequentTasks(data?.userId);
+    if(result) {
+      goToList = result;
+    }
   } catch (error:unknown) {
     if(error instanceof Error) {
       console.log('error in getting tasks', error.message); 
@@ -37,7 +43,10 @@ export default async function Dashboard() {
   }
   return (
     <div className="w-full max-w-[1200px] h-full space-y-6 my-[4vh]">
-      <TimerAndTaskList tasks={tasks} />
+      <TimerAndTaskList 
+        tasks={tasks} 
+        frequentTasks={goToList}
+      />
     </div>
   );
 }

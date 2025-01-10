@@ -4,19 +4,26 @@ import React, { useState, useEffect } from "react";
 import TimerBlock from "./timerSection/TimerBlock";
 import AddTask from "./taskSection/AddTask";
 import TaskList from "./taskSection/TaskList";
-import { TaskInterface, TimeEntryInterface } from "@/types/commonType";
+import { GoToTaskInterface, TaskInterface, TimeEntryInterface } from "@/types/commonType";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { useToast } from "@/hooks/use-toast";
 import { handleAxiosError } from "@/utils/handleAxiosError";
 import {Loader} from "@/components/loader/Loader";
+import MyGoToTasks from "./taskSection/MyGoToTasks";
 
-const TimerAndTaskList:React.FC<{tasks: TaskInterface[]}> = ({tasks}) => {
+interface PropType {
+  tasks: TaskInterface[];
+  frequentTasks: GoToTaskInterface[];
+}
+
+const TimerAndTaskList:React.FC<PropType> = ({tasks, frequentTasks}) => {
   const {toast} = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [taskList, setTaskList] = useState<TaskInterface[]>(tasks);
   const [timer, setTimer] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [activeTaskId, setActiveTaskId] = useState<string | null>(null);
+  const [goToList, setGoToList] = useState<GoToTaskInterface[]>(frequentTasks)
 
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
@@ -154,6 +161,18 @@ const TimerAndTaskList:React.FC<{tasks: TaskInterface[]}> = ({tasks}) => {
         handleCancelClick={handleCancelClick}
         handlePauseResume={handlePauseResume}
       />
+      {
+        goToList.length > 0
+        ?
+          <MyGoToTasks 
+            goToList={goToList} 
+            isRunning={isRunning}
+            activeTaskId={activeTaskId}
+            handleStartStop={handleStartStop}
+          />
+        :
+          null
+      }
       <div className="bg-white dark:bg-[#171717] border shadow rounded-lg p-6 overflow-y-auto relative">
         <div className="flex justify-between items-center mb-4">
           <div>

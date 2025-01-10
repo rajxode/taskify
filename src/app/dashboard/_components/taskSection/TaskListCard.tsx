@@ -67,7 +67,7 @@ const TaskListCard:React.FC<PropType> = ({
             {
               task?.lastPerformedAt
               ?
-                "Last Active: " + (new Date(task.lastPerformedAt).toDateString()) 
+                "Last Active: " + (new Date(task.lastPerformedAt).toString().slice(0,10)) +", "+ (new Date(task.lastPerformedAt).toString().slice(16,21))
               :
                 "This task hasn't been performed yet."
             }
