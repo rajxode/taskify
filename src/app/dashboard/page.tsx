@@ -42,11 +42,9 @@ export default async function Dashboard() {
     notFound();
   }
   return (
-    <div className="w-full max-w-[1200px] h-full space-y-6 my-[4vh]">
-      <TimerAndTaskList 
-        tasks={tasks} 
-        frequentTasks={goToList}
-      />
-    </div>
+    <TimerAndTaskList 
+      tasks={tasks} 
+      frequentTasks={goToList}
+    />
   );
 }

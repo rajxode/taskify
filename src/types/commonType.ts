@@ -24,6 +24,7 @@ export interface TimeEntryInterface {
     startTime:Date;
     endTime:Date|null;
     durationSeconds:number;
+    taskName?:string;
 }
 
 export interface ActivityStatsInterface {
@@ -38,4 +39,5 @@ export interface GoToTaskInterface {
     taskId:string;
     taskName:string;
     totalDuration:number;
+    totalEntries:number;
 }

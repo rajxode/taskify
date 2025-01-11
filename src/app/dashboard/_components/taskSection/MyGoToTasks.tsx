@@ -11,6 +11,7 @@ interface PropType{
 }
 
 const MyGoToTasks:React.FC<PropType> = ({goToList, isRunning, activeTaskId, handleStartStop}) => {
+    const list = goToList?.length > 3 ? goToList.slice(0,3)  : goToList;
     return (
         <div className="w-full bg-white dark:bg-[#171717] border shadow rounded-lg p-6">
             <div className="w-full mb-2">
@@ -20,7 +21,7 @@ const MyGoToTasks:React.FC<PropType> = ({goToList, isRunning, activeTaskId, hand
             </div>
             <div className="w-full grid sm:grid-cols-3 gap-4">
                 {
-                    goToList.map((task) => (
+                    list.map((task) => (
                         <div key={task.taskId} className="bg-gray-100 dark:bg-[#212121] border rounded-lg p-3 flex justify-between items-center">
                             <div>{task.taskName}</div>
                             <div className="flex items-center">

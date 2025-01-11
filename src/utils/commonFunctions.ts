@@ -10,3 +10,7 @@ export const formatTime = (seconds: number) => {
 export const firstLetterUpper = (str:string) => {
     return (str.slice(0,1).toUpperCase() + str.slice(1));
 }
+
+export const getDateAndTime = (date:Date) => {
+    return (new Date(date).toString().slice(0,10)) +", "+ (new Date(date).toString().slice(16,21));
+}

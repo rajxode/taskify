@@ -1,6 +1,6 @@
 import { db } from "@/db";
 import { taskTable, timeEntries } from "@/db/schema";
-import { frequentTasks } from "@/server-actions/action";
+import { frequentTasks, getRecentActivities } from "@/server-actions/action";
 import { ActivityStatsInterface } from "@/types/commonType";
 import { getTokenData } from "@/utils/getTokenData";
 import { handleApiError, unAuthorizedError } from "@/utils/handleApiError";
@@ -22,20 +22,8 @@ export async function GET(req:NextRequest) {
             lastTask:null,
             lastActivity:null
         }
-        const entries = await db
-                        .select({
-                            id:timeEntries.id,
-                            taskId:timeEntries.taskId,
-                            startTime:timeEntries.startTime,
-                            endTime: timeEntries.endTime,
-                            durationSeconds: timeEntries.durationSeconds,
-                            taskName: taskTable.name
-                        })
-                        .from(timeEntries)
-                        .where(eq(timeEntries.userId, userId))
-                        .leftJoin(taskTable,eq(timeEntries.taskId, taskTable.id))
-                        .orderBy(desc(timeEntries.startTime));
-        if(entries.length > 0) {
+        const entries = await getRecentActivities(userId);
+        if(entries && entries.length > 0) {
             const date = (new Date).toISOString().slice(0,10);
             const frequentTask = await frequentTasks(userId);
             stats.lastTask = entries[0].taskName;
