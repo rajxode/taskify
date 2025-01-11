@@ -14,6 +14,11 @@ import { AxiosError } from "axios";
 import PersonalInfoCard from "./_components/PersonalInfoCard";
 import { frequentTasks } from "@/server-actions/action";
 import { GoToTaskInterface } from "@/types/commonType";
+import { Metadata } from "next";
+
+export const metadata:Metadata = {
+    title:"Activity Stats"
+}
 
 export default async function ActivityPage() {
     let stats = null;

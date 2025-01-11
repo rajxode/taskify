@@ -1,5 +1,13 @@
 import { ThemeProvider } from "@/components/ThemeProvider";
 import Header from "@/components/Header";
+import { Metadata } from "next";
+
+export const metadata:Metadata = {
+  title: {
+    default:"Home",
+    template:"%s | Taskify"
+  },
+}
 
 export default function DashboardLayout({
   children,

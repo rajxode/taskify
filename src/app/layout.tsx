@@ -16,7 +16,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Taskify",
+  title:{
+    default:"Taskify",
+    template:"%s | Taskify"
+  },
   description: "Effortlessly track your time and boost productivity",
 };
 
