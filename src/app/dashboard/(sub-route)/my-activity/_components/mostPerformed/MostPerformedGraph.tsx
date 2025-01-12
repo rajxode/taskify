@@ -1,5 +1,4 @@
 "use client";
-import { TrendingUp } from "lucide-react";
 import {
   Label,
   PolarGrid,
@@ -16,46 +15,47 @@ import {
 } from "@/components/ui/card";
 import { ChartConfig, ChartContainer } from "@/components/ui/chart";
 import { firstLetterUpper } from "@/utils/commonFunctions";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+import { GoToTaskInterface } from "@/types/commonType";
 
 const chartConfig = {} satisfies ChartConfig;;
 
-interface TotalDuration {
-  taskId:string;
-  taskName:string;
-  totalDuration:number;
-}
-
 interface PropType {
-  totalTime:TotalDuration[];
-  taskDuration:number;
-  taskName:string;
-  taskFrequency:number;
+  mostPerformed:GoToTaskInterface | null;
+  totalDuration:number | null;
 }
 
-export function MostPerformedGraph({totalTime, taskDuration, taskName, taskFrequency}:PropType) {
+export function MostPerformedGraph({mostPerformed, totalDuration}:PropType) {
   const [chartData, setChartData] = useState<any>([]);
   useEffect(() => {
-    setChartData([{taskName, taskFrequency, taskDuration, fill: "hsl(var(--chart-2))"}]);
+    setChartData([{...mostPerformed, fill: "hsl(var(--chart-1))"}]);
   },[]);
-  const totalDuration = useMemo(() => {
-        return totalTime.reduce((acc, curr) => acc + Number(curr.totalDuration), 0)
-    }, []);
   return (
     <Card className="bg-white dark:bg-[#171717] flex flex-col md:col-span-2">
       <CardHeader>
-        <CardTitle>{firstLetterUpper(taskName)}</CardTitle>
+        <CardTitle>
+          {
+            mostPerformed && totalDuration && totalDuration > 0
+            ?
+            firstLetterUpper(mostPerformed.taskName)
+            :
+            "None"
+          }
+        </CardTitle>
         <CardDescription>Most Performed Task</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
-        <ChartContainer
+        {
+          mostPerformed && totalDuration && totalDuration > 0
+          ?
+          <ChartContainer
           config={chartConfig}
           className="mx-auto aspect-square max-h-[250px]"
         >
           <RadialBarChart
             data={chartData}
             startAngle={0}
-            endAngle={(taskDuration * 360)/totalDuration}
+            endAngle={(mostPerformed.totalDuration * 360)/totalDuration}
             innerRadius={80}
             outerRadius={110}
           >
@@ -66,7 +66,7 @@ export function MostPerformedGraph({totalTime, taskDuration, taskName, taskFrequ
               className="first:fill-muted last:fill-background"
               polarRadius={[86, 74]}
             />
-            <RadialBar dataKey="taskFrequency" background cornerRadius={10} />
+            <RadialBar dataKey="totalEntries" background cornerRadius={10} />
             <PolarRadiusAxis tick={false} tickLine={false} axisLine={false}>
               <Label
                 content={({ viewBox }) => {
@@ -83,7 +83,7 @@ export function MostPerformedGraph({totalTime, taskDuration, taskName, taskFrequ
                           y={viewBox.cy}
                           className="fill-foreground text-4xl font-bold"
                         >
-                          {chartData[0].taskFrequency.toLocaleString()}
+                          {chartData[0].totalEntries.toLocaleString()}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
@@ -100,6 +100,8 @@ export function MostPerformedGraph({totalTime, taskDuration, taskName, taskFrequ
             </PolarRadiusAxis>
           </RadialBarChart>
         </ChartContainer>
+        :
+        "Not enough data"}
       </CardContent>
     </Card>
   )

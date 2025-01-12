@@ -2,35 +2,32 @@
 export const dynamic = 'force-dynamic';
 
 import React from "react";
-import TodayActivityGraph from "./_components/TodaysActivityGraph";
-import TotalTimeGraph from "./_components/TotalTimeGraph";
-import FrequentTaskGraph from "./_components/FrequentTaskGraph";
-import { MostPerformedGraph } from "./_components/MostPerformedGraph";
-import RecentEntryTable from "./_components/RecentEntryTable";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { cookies } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 import { AxiosError } from "axios";
-import PersonalInfoCard from "./_components/PersonalInfoCard";
-import { frequentTasks } from "@/server-actions/action";
-import { GoToTaskInterface } from "@/types/commonType";
+import PersonalInfoCard from "./_components/personalInfo/PersonalInfoCard";
+import { UserInterface } from "@/types/commonType";
 import { Metadata } from "next";
+import { ActivityPageSkeleton } from "@/components/skeletons/ActivityStats";
+import TotalTimeSection from "./_components/totalTime/TotalTimeSection";
+import TodayActivitySection from "./_components/todayActivity/TodayActivitySection";
+import FrequentAndMostSection from "./_components/FrequentAndMostSection";
+import RecentActivitySection from "./_components/recentActivity/RecentActivitySection";
 
 export const metadata:Metadata = {
     title:"Activity Stats"
 }
 
 export default async function ActivityPage() {
-    let stats = null;
-    let frequentTask:GoToTaskInterface[] = [];
-    let totalDuration = 0;
+    let user:UserInterface | null = null;
     try {
         const cookieStore = cookies();
         const token = (await cookieStore).get("token")?.value;
         if(!token) {
             redirect("/signin");
         }
-        const {data} = await axiosInstance.get("/users/my-data/complete-stats",{
+        const {data} = await axiosInstance.get("/users/my-data",{
             headers: {
                 Cookie: `token=${token}`
             }
@@ -38,36 +35,29 @@ export default async function ActivityPage() {
         if(!data.success) {
             throw new Error("Something went wrong");
         }
-        stats = data?.stats;
-        const result = await frequentTasks(stats.user.id);
-        if(result) {
-            frequentTask = result;
-        }
+        user = data?.user;
     } catch (error:unknown) {
         if(error instanceof AxiosError) {
-            console.log("axios error in getting complete stats", error?.response?.data);
+            console.log("axios error in my-activity page", error?.response?.data);
         } else if(error instanceof Error){
-            console.log("Error in getting complete stats", error.message)
+            console.log("Error in my-activity page", error.message)
         } else {
-          console.log("unknown error in getting complete stats", error);  
+          console.log("unknown error in my-activity page", error);  
         }
         notFound();
     }
+    if(!user) {
+        return <ActivityPageSkeleton />
+    } 
     return (
         <div className="w-full flex flex-col space-y-6">
-            <PersonalInfoCard user={stats?.user} />
+            <PersonalInfoCard user={user} />
             <div className="w-full grid md:grid-cols-3 gap-4">
-                <TotalTimeGraph totalTime={stats.totalTime} />
-                <TodayActivityGraph todayTime={stats.todayTime} />
+                <TotalTimeSection userId={user.id} />
+                <TodayActivitySection userId={user.id} />
             </div>
             <div className="w-full grid md:grid-cols-5 gap-4">
-                <MostPerformedGraph
-                    taskName={frequentTask[0].taskName} 
-                    taskDuration={frequentTask[0].totalDuration} 
-                    totalTime={stats.totalTime} 
-                    taskFrequency={frequentTask[0].totalEntries}
-                />
-                <FrequentTaskGraph frequentTask={frequentTask} />
+                <FrequentAndMostSection userId={user.id} />
             </div>
             <div className="w-full bg-white dark:bg-[#171717] border shadow rounded-lg p-6 flex flex-col">
                 <div className="w-full mb-2">
@@ -75,7 +65,7 @@ export default async function ActivityPage() {
                         Recent Task Activities
                     </h2>
                 </div>
-                <RecentEntryTable recentActivities={stats.recentActivities} />
+                <RecentActivitySection userId={user.id} />
             </div>
         </div>
     )

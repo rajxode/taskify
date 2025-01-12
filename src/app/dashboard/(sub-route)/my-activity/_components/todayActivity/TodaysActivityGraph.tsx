@@ -1,24 +1,22 @@
 "use client"
 
-import * as React from "react"
-import { TrendingUp } from "lucide-react"
-import { Label, Pie, PieChart } from "recharts"
+import * as React from "react";
+import { Label, Pie, PieChart } from "recharts";
 
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
-import { formatTime } from "@/utils/commonFunctions"
+} from "@/components/ui/chart";
+import { formatTime } from "@/utils/commonFunctions";
 
 const colorArray = [
   "hsl(var(--chart-1))",
@@ -26,7 +24,7 @@ const colorArray = [
   "hsl(var(--chart-3))",
   "hsl(var(--chart-4))",
   "hsl(var(--chart-5))",
-]
+];
 
 const chartConfig = {} satisfies ChartConfig;
 
@@ -61,7 +59,10 @@ export default function TodayActivityGraph({todayTime} :{todayTime:PropType[]}) 
         <CardDescription>{(new Date).toDateString()}</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
-        <ChartContainer
+        {
+          todayTime && todayTime.length > 0
+          ?
+          <ChartContainer
           config={chartConfig}
           className="mx-auto aspect-square max-h-[250px]"
         >
@@ -119,6 +120,9 @@ export default function TodayActivityGraph({todayTime} :{todayTime:PropType[]}) 
             </Pie>
           </PieChart>
         </ChartContainer>
+        :
+        "Not enough data"
+        }
       </CardContent>
     </Card>
   )

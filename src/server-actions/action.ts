@@ -81,7 +81,7 @@ export async function todayTimeDistribution(userId:string) {
             .select({
                 taskId: taskTable.id,
                 taskName: taskTable.name,
-                totalDurationToday: sql<bigint>`cast(sum(${timeEntries.durationSeconds}) as int)`.as('total_duration'),
+                totalDurationToday: sql<number>`cast(sum(${timeEntries.durationSeconds}) as int)`.as('total_duration'),
             })
             .from(taskTable)
             .innerJoin(timeEntries, sql`${taskTable.id} = ${timeEntries.taskId}`)

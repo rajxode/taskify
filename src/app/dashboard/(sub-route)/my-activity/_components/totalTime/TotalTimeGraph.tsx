@@ -5,9 +5,6 @@ import {
   Bar,
   BarChart,
   CartesianGrid, 
-  LabelList, 
-  Line, 
-  LineChart, 
   XAxis 
 } from "recharts";
 import {
@@ -50,7 +47,10 @@ export default function TotalTimeGraph({totalTime}:{totalTime:PropType[]}) {
         <CardDescription>{formatTime(sumDuration)}</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className="w-full max-h-[250px]">
+        {
+          totalTime && totalTime.length > 0 && sumDuration > 0
+          ?
+          <ChartContainer config={chartConfig} className="w-full max-h-[250px]">
           <BarChart
             accessibilityLayer
             data={totalTime}
@@ -84,9 +84,11 @@ export default function TotalTimeGraph({totalTime}:{totalTime:PropType[]}) {
               fill="var(--color-totalDuration)"
               radius={8}
             />
-            {/* </Bar> */}
           </BarChart>
         </ChartContainer>
+        :
+        "Not enough data"
+        }
       </CardContent>
     </Card>
   )

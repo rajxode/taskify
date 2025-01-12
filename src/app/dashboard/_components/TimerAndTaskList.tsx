@@ -118,6 +118,7 @@ const TimerAndTaskList:React.FC<PropType> = ({tasks, frequentTasks}) => {
       const {data} = await axiosInstance.delete(`/task/${id}`);
       if(data.success) {
         setTaskList(tasks.filter((task) => task.id !== id));
+        setGoToList(goToList.filter((task) => task.taskId !== id));
         if (activeTaskId === id) {
           setIsRunning(false);
           setActiveTaskId(null);
