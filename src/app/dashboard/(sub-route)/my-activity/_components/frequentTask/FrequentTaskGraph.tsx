@@ -29,7 +29,6 @@ interface PropType {
 }
 
 export default function FrequentTaskGraph({frequentTask, totalDuration}:{frequentTask:PropType[]; totalDuration:number|null}) {
-  console.log("frequent task", frequentTask);
   return (
     <Card className="w-full bg-white dark:bg-[#171717] md:col-span-3">
       <CardHeader>

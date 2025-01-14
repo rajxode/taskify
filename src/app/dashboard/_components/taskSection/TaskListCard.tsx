@@ -8,6 +8,7 @@ import {
 import TaskMenu from "./TaskMenu";
 import { formatTime } from "@/utils/commonFunctions";
 import AlertDialog from "@/components/alert-dialog/AlertDialog";
+import Link from "next/link";
 
 interface PropType {
   timer:number;
@@ -46,7 +47,9 @@ const TaskListCard:React.FC<PropType> = ({
         <div className="w-full flex justify-between items-start">
           <div>
             <h3 className="text-xl font-medium text-gray-900 dark:text-white">
+              <Link href={`/dashboard/task-info/${task.id}`} className="hover:text-[#36621F] dark:hover:text-[#3ecf8e] hover:underline underline-offset-2">
               {task.name.slice(0,1).toUpperCase() + task.name.slice(1)}
+              </Link>
             </h3>
             <div className="text-xs text-gray-500 dark:text-gray-400">
               Created At: {new Date(task.createdAt).toDateString()}

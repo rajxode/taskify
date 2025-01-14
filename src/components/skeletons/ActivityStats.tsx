@@ -34,7 +34,7 @@ export function ProfileSkeleton() {
                     (new Array(3))
                         .fill(0)
                         .map((_,i) => (
-                            <div className="p-3 space-y-2 border rounded-lg">
+                            <div key={i} className="p-3 space-y-2 border rounded-lg">
                                 <Skeleton className="h-3 max-w-[150px]" />
                                 <Skeleton className="h-4 max-w-[200px]" />
                             </div>
@@ -101,7 +101,7 @@ export function RecentSkeleton() {
                 (new Array(5))
                     .fill(0)
                     .map((_,i) => (
-                        <div className="w-full">
+                        <div key={i} className="w-full">
                             <Skeleton className="h-12 w-full" />
                         </div>
                     )

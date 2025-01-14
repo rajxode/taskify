@@ -27,8 +27,6 @@ export async function POST(req: NextRequest) {
       .values({ name: name, description: description, userId: userId })
       .returning();
 
-    console.log("task", task[0]);
-
     return NextResponse.json(
       {
         success: true,
