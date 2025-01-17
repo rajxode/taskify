@@ -73,10 +73,7 @@ export default function TodayActivityGraph({todayTime} :{todayTime:PropType[]}) 
                 <ChartTooltipContent 
                   // hideLabel 
                   formatter={(value, name) => {
-                    // if (name === "totalDurationToday") {
                       return [name+": "+formatTime(Number(value))]
-                    // }
-                    // return name;
                   }}
                 />
               }

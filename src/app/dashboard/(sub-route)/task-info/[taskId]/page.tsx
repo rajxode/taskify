@@ -18,7 +18,6 @@ export default async function TaskInfoPage({
 }:{
     params: Promise<{ taskId:string}>
 }) {
-    let loading = true;
     const taskId = (await params).taskId;
     if(!taskId) {
         return notFound();
@@ -40,15 +39,8 @@ export default async function TaskInfoPage({
         }
     } catch (error) {
         console.log("error in task info page", error);
-    } finally {
-        loading = false;
     }
-    if(loading) {
-        return <div>
-            Loading ....
-        </div>
-    }
-    if(!task && !loading) {
+    if(!task) {
         return notFound();
     }
     return (
@@ -89,7 +81,7 @@ export default async function TaskInfoPage({
                     </div>
                     <div className="flex flex-col p-3 bg-gray-100 dark:bg-[#212121] border rounded-lg">
                         <div className="text-xs text-gray-600 dark:text-gray-500">Description</div>
-                        <div>{task?.description}</div>
+                        <div>{task?.description || "No description for this task"}</div>
                     </div>
                     <div className="flex flex-col p-3 bg-gray-100 dark:bg-[#212121] border rounded-lg">
                         <div className="text-xs text-gray-600 dark:text-gray-500">Added on</div>
@@ -98,7 +90,7 @@ export default async function TaskInfoPage({
                 </div>
             </div>
             <div className="w-full grid md:grid-cols-5 gap-4">
-                <DailySection />
+                <DailySection taskId={taskId} userId={task.userId} />
                 <WeeklySection />
             </div>
             <div className="border">
