@@ -70,8 +70,7 @@ export default function TodayActivityGraph({todayTime} :{todayTime:PropType[]}) 
             <ChartTooltip
               cursor={false}
               content={
-                <ChartTooltipContent 
-                  // hideLabel 
+                <ChartTooltipContent
                   formatter={(value, name) => {
                       return [name+": "+formatTime(Number(value))]
                   }}

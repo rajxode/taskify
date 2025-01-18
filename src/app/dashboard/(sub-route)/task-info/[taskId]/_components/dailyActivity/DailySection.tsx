@@ -17,7 +17,7 @@ export default async function DailySection({taskId, userId}:{taskId:string; user
     if(result) {
       totalDuration = result?.reduce((acc, curr) => acc + curr.totalDurationToday, 0);
       const todayTask = result?.filter((task) => task.taskId === taskId);
-      if( todayTask) {
+      if( todayTask && todayTask.length > 0 ) {
         chartData = [
           {taskName:todayTask[0].taskName, duration: todayTask[0].totalDurationToday, fill:"hsl(var(--chart-1))"},
         ]

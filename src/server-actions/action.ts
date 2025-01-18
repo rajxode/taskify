@@ -1,6 +1,6 @@
 import { db } from "@/db";
 import { taskTable, timeEntries } from "@/db/schema";
-import { desc, eq, sql } from "drizzle-orm";
+import { and, desc, eq, sql } from "drizzle-orm";
 
 function errorHandler(error:unknown, errorName:string) {
     if(error instanceof Error) {
@@ -118,5 +118,87 @@ export async function getRecentActivities(userId:string) {
         return result;
     } catch (error:unknown) {
         return errorHandler(error,"recentActivities");
+    }
+}
+
+export async function getWeeklyTaskTimeBreakdown(taskId: string, userId: string) {
+    try {
+        if(!userId || !taskId) {
+            return null;
+        }
+        // Get dates for the past 7 days
+        const now = new Date();
+        const pastWeekDates = Array.from({ length: 7 }, (_, i) => {
+          const date = new Date(now);
+          date.setDate(date.getDate() - i);
+          return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())).toISOString();
+        }).reverse(); // Reverse to get oldest to newest
+      
+        // Get the start and end bounds for the query
+        const weekStart = pastWeekDates[0];
+        const weekEnd = new Date(now).toISOString();
+    
+    
+        // Query to get daily totals
+        const dailyTotals = await db
+          .select({
+            date: sql<string>`DATE(${timeEntries.startTime})`.as('date'),
+            totalDuration: sql<number>`sum(${timeEntries.durationSeconds})`.as('total_duration'),
+            entryCount: sql<number>`count(${timeEntries.id})`.as('entry_count'),
+          })
+          .from(timeEntries)
+          .where(sql`
+            ${timeEntries.taskId} = ${taskId}
+            AND ${timeEntries.userId} = ${userId}
+            AND ${timeEntries.startTime} >= ${weekStart}::timestamp
+            AND ${timeEntries.startTime} < ${weekEnd}::timestamp
+          `)
+          .groupBy(sql`DATE(${timeEntries.startTime})`);
+      
+        // Create a map of date to duration for easier lookup
+        const durationMap = new Map(
+          dailyTotals.map((entry) => [entry.date, {
+            totalSeconds: entry.totalDuration,
+            entryCount: entry.entryCount
+          }])
+        );
+      
+        // Format the result with all 7 days, including zeros for days with no entries
+        const formattedResult = pastWeekDates.map(date => {
+          const dayDate = date.split('T')[0];
+          const dayData = durationMap.get(dayDate) || { totalSeconds: 0, entryCount: 0 };
+          
+          return {
+            date: dayDate,
+            totalSeconds: dayData.totalSeconds,
+            numberOfEntries: dayData.entryCount
+          };
+        });
+        return formattedResult;   
+    } catch (error) {
+        return errorHandler(error,"getWeeklyTaskTimeBreakdown")
+    }
+}
+
+export async function getRecentTaskActivities (taskId:string, userId:string) {
+    try {
+        if(!userId || !taskId){
+            return null;
+        }
+        const result = await db
+            .select({
+                id:timeEntries.id,
+                taskId:timeEntries.taskId,
+                startTime:timeEntries.startTime,
+                endTime: timeEntries.endTime,
+                durationSeconds: timeEntries.durationSeconds,
+            })
+            .from(timeEntries)
+            .where(and(eq(timeEntries.userId, userId), eq(timeEntries.taskId, taskId)))
+            .orderBy(desc(timeEntries.startTime))
+            .limit(5);
+        return result;
+    } catch (error) {
+        return errorHandler(error,"getRecentTaskActivities");
     }
 }

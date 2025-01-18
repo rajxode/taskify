@@ -61,13 +61,13 @@ export default async function TaskInfoPage({
                             </div>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="md:min-w-[150px] mr-3 border">
-                        <DialogTrigger asChild>
-                            <DropdownMenuItem className="cursor-pointer">
-                                Update Task
-                            </DropdownMenuItem>
+                            <DialogTrigger asChild>
+                                <DropdownMenuItem className="cursor-pointer">
+                                    Update Task
+                                </DropdownMenuItem>
                             </DialogTrigger>
                             <DropdownMenuItem className="cursor-pointer">
-                            Delete Task
+                                Delete Task
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                         </DropdownMenu>
@@ -91,9 +91,9 @@ export default async function TaskInfoPage({
             </div>
             <div className="w-full grid md:grid-cols-5 gap-4">
                 <DailySection taskId={taskId} userId={task.userId} />
-                <WeeklySection />
+                <WeeklySection taskId={taskId} userId={task.userId} />
             </div>
-            <div className="border">
+            <div>
                 <MonthlySection />
             </div>
             <div className="w-full bg-white dark:bg-[#171717] border shadow rounded-lg p-6 flex flex-col">
@@ -102,7 +102,7 @@ export default async function TaskInfoPage({
                         Recent Task Activities
                     </h2>
                 </div>
-                <RecentSection />
+                <RecentSection taskId={taskId} userId={task.userId} />
             </div>
         </div>
     )
