@@ -143,8 +143,8 @@ export async function getWeeklyTaskTimeBreakdown(taskId: string, userId: string)
         const dailyTotals = await db
           .select({
             date: sql<string>`DATE(${timeEntries.startTime})`.as('date'),
-            totalDuration: sql<number>`sum(${timeEntries.durationSeconds})`.as('total_duration'),
-            entryCount: sql<number>`count(${timeEntries.id})`.as('entry_count'),
+            totalDuration: sql<number>`cast(sum(${timeEntries.durationSeconds}) as int)`.as('total_duration'),
+            entryCount: sql<number>`cast(count(${timeEntries.id}) as int)`.as('entry_count'),
           })
           .from(timeEntries)
           .where(sql`
@@ -200,5 +200,60 @@ export async function getRecentTaskActivities (taskId:string, userId:string) {
         return result;
     } catch (error) {
         return errorHandler(error,"getRecentTaskActivities");
+    }
+}
+
+export async function getMonthlyTaskTimeBreakdown(taskId: string, userId: string) {
+    try {
+        if(!userId || !taskId) {
+            return null;
+        }
+
+        const now = new Date();
+        const monthDates = Array.from({ length: now.getDate() }, (_, i) => {
+          const date = new Date(now);
+          date.setDate(date.getDate() - i);
+          return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())).toISOString();
+        }).reverse();
+      
+        // Get the start and end bounds for the query
+        const monthStart = monthDates[0];
+        const monthEnd = new Date(now).toISOString();
+    
+        const dailyTotals = await db
+          .select({
+            date: sql<string>`DATE(${timeEntries.startTime})`.as('date'),
+            totalDuration: sql<number>`cast(sum(${timeEntries.durationSeconds}) as int)`.as('total_duration'),
+            entryCount: sql<number>`cast(count(${timeEntries.id}) as int)`.as('entry_count'),
+          })
+          .from(timeEntries)
+          .where(sql`
+            ${timeEntries.taskId} = ${taskId}
+            AND ${timeEntries.userId} = ${userId}
+            AND ${timeEntries.startTime} >= ${monthStart}::timestamp
+            AND ${timeEntries.startTime} < ${monthEnd}::timestamp
+          `)
+          .groupBy(sql`DATE(${timeEntries.startTime})`);
+      
+        const durationMap = new Map(
+          dailyTotals.map((entry) => [entry.date, {
+            totalSeconds: entry.totalDuration,
+            entryCount: entry.entryCount
+          }])
+        );
+        
+        const formattedResult = monthDates.map(date => {
+          const dayDate = date.split('T')[0];
+          const dayData = durationMap.get(dayDate) || { totalSeconds: 0, entryCount: 0 };
+          
+          return {
+            date: dayDate,
+            totalSeconds: dayData.totalSeconds,
+            numberOfEntries: dayData.entryCount
+          };
+        });
+        return formattedResult;   
+    } catch (error) {
+        return errorHandler(error,"getMonthlyTaskTimeBreakdown")
     }
 }

@@ -14,3 +14,5 @@ export const firstLetterUpper = (str:string) => {
 export const getDateAndTime = (date:Date) => {
     return (new Date(date).toString().slice(0,10)) +", "+ (new Date(date).toString().slice(16,21));
 }
+
+export const monthArray = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];

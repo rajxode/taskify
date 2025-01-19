@@ -94,7 +94,7 @@ export default async function TaskInfoPage({
                 <WeeklySection taskId={taskId} userId={task.userId} />
             </div>
             <div>
-                <MonthlySection />
+                <MonthlySection taskId={taskId} userId={task.userId} />
             </div>
             <div className="w-full bg-white dark:bg-[#171717] border shadow rounded-lg p-6 flex flex-col">
                 <div className="w-full mb-2">
