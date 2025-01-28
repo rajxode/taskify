@@ -4,8 +4,8 @@ import HeroSection from "@/app/_landingPage/_components/HeroSection";
 import FeatureSection from "@/app/_landingPage/_components/FeaturesSection";
 import CTASection from "@/app/_landingPage/_components/CTASection";
 import HowItWorks from "@/app/_landingPage/_components/HowItWorks";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 
 const LandingPage:React.FC = () => {
     return (

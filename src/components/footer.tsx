@@ -1,4 +1,6 @@
 
+import React from "react";
+
 export default function Footer() {
   return (
     <footer className="py-6 px-4 sm:px-6 lg:px-8 bg-white dark:bg-[#121212]/80 border-t border-gray-200 dark:border-gray-700">
